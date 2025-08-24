@@ -51,15 +51,42 @@ public class WPrime extends JFrame{
 	public static void tab() {
 		
 		
-		//Imports
+		//Imports - Paneles
 		JPanel Panelv1 = new JPanel();
+		JPanel Panelh1 = new JPanel();
 		JPanel TabContainer = new JPanel();
+		
+		//Labels
 		JLabel label1 = new JLabel("Barra de Herramientas");
-		JButton boton1 = new JButton("Registrar");
-		JButton boton2 = new JButton("Dar de Baja");
-		JButton boton3 = new JButton("Listar");
-		JButton boton4 = new JButton("Configuracion");
-		JButton boton5 = new JButton("Otros");
+		
+		//Separators
+		JSeparator separator1 = new JSeparator();
+		JSeparator separator2 = new JSeparator();
+		JSeparator separator3 = new JSeparator();
+		JSeparator separator4 = new JSeparator();
+		
+		//Botones
+		JButton Registrar = new JButton("Registrar");
+		JButton DarDeBaja = new JButton("Dar de Baja");
+		JButton Listar = new JButton("Listar");
+		JButton Configuracion = new JButton("Configuracion");
+		JButton Otros = new JButton("Otros");
+		
+		//PopupMenu
+		JPopupMenu MenuRegistrar = new JPopupMenu();
+		JPopupMenu MenuDarDeBaja = new JPopupMenu();
+		JPopupMenu MenuListar = new JPopupMenu();
+		JPopupMenu MenuOtros = new JPopupMenu();
+		
+		//MenuItem
+		JMenuItem RegistrarLibro = new JMenuItem("Libro");
+		JMenuItem RegistrarComputadora = new JMenuItem("Computadora");
+		JMenuItem DarDeBajaLibro = new JMenuItem("Libro");
+		JMenuItem DarDeBajaComputadora = new JMenuItem("Computadora");
+		JMenuItem ListarLibro = new JMenuItem("Libro");
+		JMenuItem ListarComputadora = new JMenuItem("Computadora");
+		JMenuItem OtrosAyuda = new JMenuItem("Ayuda");
+		JMenuItem OtrosManualDeUsuario = new JMenuItem("Manual de usuario");
 		
 		
 		//Setters
@@ -69,16 +96,89 @@ public class WPrime extends JFrame{
 		TabContainer.setLayout(new FlowLayout(FlowLayout.LEFT));
 		TabContainer.setBackground(Color.GRAY);
 		
+		Panelh1.setBackground(Color.GRAY);
+		
+		Registrar.setBackground(Color.GRAY);
+		DarDeBaja.setBackground(Color.GRAY);
+		Listar.setBackground(Color.GRAY);
+		Configuracion.setBackground(Color.GRAY);
+		Otros.setBackground(Color.GRAY);
+		
+		Registrar.setBorder(null);
+		DarDeBaja.setBorder(null);
+		Listar.setBorder(null);
+		Configuracion.setBorder(null);
+		Otros.setBorder(null);
+		
+		Negrita(label1, 20);
+		Negrita(Registrar, 16);
+		Negrita(DarDeBaja, 16);
+		Negrita(Listar, 16);
+		Negrita(Configuracion, 16);
+		Negrita(Otros, 16);
+		
+		
+		//Eventos
+		Registrar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MenuRegistrar.show(Registrar, 0, Registrar.getHeight());
+			}
+		});
+		
+		DarDeBaja.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MenuDarDeBaja.show(DarDeBaja, 0, DarDeBaja.getHeight());
+			}
+		});
+		
+		Listar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MenuListar.show(Listar, 0, Listar.getHeight());
+			}
+		});
+		
+		Otros.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MenuOtros.show(Otros, 0, Otros.getHeight());
+			}
+		});
+		
 		
 		//Adds
-		Panelv1.add(label1);
+		Panelh1.add(label1);
+		
+		Panelv1.add(Panelh1);
 		Panelv1.add(TabContainer);
 		
-		TabContainer.add(boton1);
-		TabContainer.add(boton2);
-		TabContainer.add(boton3);
-		TabContainer.add(boton4);
-		TabContainer.add(boton5);
+		TabContainer.add(Registrar);
+		TabContainer.add(separator1);
+		TabContainer.add(DarDeBaja);
+		TabContainer.add(separator2);
+		TabContainer.add(Listar);
+		TabContainer.add(separator3);
+		TabContainer.add(Configuracion);
+		TabContainer.add(separator4);
+		TabContainer.add(Otros);
+		
+		MenuRegistrar.add(RegistrarLibro);
+		MenuRegistrar.add(RegistrarComputadora);
+		
+		MenuDarDeBaja.add(DarDeBajaLibro);
+		MenuDarDeBaja.add(DarDeBajaComputadora);
+		
+		MenuListar.add(ListarLibro);
+		MenuListar.add(ListarComputadora);
+		
+		MenuOtros.add(OtrosAyuda);
+		MenuOtros.add(OtrosManualDeUsuario);
 		
 		
 		//Aplica al PanelP
@@ -89,12 +189,11 @@ public class WPrime extends JFrame{
 	
 	
 	/*
-	 * FUNCION: sistemInfo
+	 * FUNCION: systemInfo
 	 * INPUT:
 	 * OUTPUT: Uso de la memoria RAM
 	 * 
-	 * Esta funcion unicamente tiene el proposito de ser algo experimental sin cumplir un proposito real, todo el calculo
-	 * de la memoria RAM y la linea 92 fueron obtuvidos mediante Gemini a manera de experimentacion
+	 * Esta funcion unicamente tiene el proposito de ser algo experimental sin cumplir un proposito real
 	 */
 	public static void systemInfo() {
 		
@@ -132,4 +231,117 @@ public class WPrime extends JFrame{
 	
 	
 	
+	public static void sidetab() {
+		
+	}
+	
+	
+	
+	/*
+	 * FUNCION: stateMachine
+	 * INPUT:
+	 * OUTPUT:
+	 */
+	public static void stateMachine() {
+		
+	}
+	
+	
+	
+	public static void Negrita(JComponent componente, int tamano) {
+		Font fuenteActual = componente.getFont();
+        Font fuenteNegrita = new Font(fuenteActual.getName(), Font.BOLD, tamano);
+        componente.setFont(fuenteNegrita);
+	}
+	
+	
+	
+	public static void SubirLibro() {
+		
+	}
+	
+	
+	
+	public static void SubirComputadora() {
+		
+	}
+	
+	
+	
+	public static void BajarLibro() {
+		
+	}
+	
+	
+	
+	public static void BajarComputadora() {
+		
+	}
+	
+	
+	
+	public static void ListarLibro() {
+		
+	}
+	
+	
+	
+	public static void ListarComputadora() {
+		
+	}
+	
+	
+	
+	public static void Configurar() {
+		
+	}
+	
+	
+	
+	public static void OtrosAyuda() {
+		
+	}
+	
+	
+	
+	public static void OtrosManualUsuario() {
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

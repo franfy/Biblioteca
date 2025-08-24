@@ -3,8 +3,13 @@ package Biblioteca;
 public class LGestor {
 
 	public static void main(String[] args) {
-		WPrime ventana = new WPrime();
+		WLogin ventana = new WLogin();
 		ventana.setVisible(true);
+	}
+	
+	public static void MostrarVentana() {
+		WPrime VentanaPrime = new WPrime();
+		VentanaPrime.setVisible(true);
 	}
 
 }
