@@ -1,9 +1,7 @@
 package Biblioteca;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
+import java.awt.event.*;
 import javax.swing.*;
 
 public class WLogin extends JFrame {
@@ -33,7 +31,7 @@ public class WLogin extends JFrame {
 		//imports
 		JPanel panelv1 = new JPanel();
 		JPanel panelh1 = new JPanel();
-		JLabel fondo = new JLabel(new ImageIcon("/home/franco/Pictures/Wallpapers/1756054601307.jpg"));
+		JLabel fondo = new JLabel(new ImageIcon("/home/franco/Pictures/wallpaper/1373092.png"));
 		JLabel error = new JLabel();
 		JPasswordField pass = new JPasswordField(2);
 		JComboBox turnosBox = new JComboBox(turnos);
@@ -50,12 +48,16 @@ public class WLogin extends JFrame {
 		pass.setToolTipText("Ingresa la contraseña, luego presiona la tecla Enter para iniciar sesion");
 		pass.setBackground(Color.LIGHT_GRAY);
 		pass.setPreferredSize(new Dimension(0, 30));
+		pass.setEchoChar((char) 0);
+		pass.setText("Ingresa la Contraseña");
 		
 		panelv1.setLayout(new BoxLayout(panelv1, BoxLayout.Y_AXIS));
 		panelv1.setBackground(Color.LIGHT_GRAY);
+		//panelv1.setOpaque(false);
 		
 		panelh1.setLayout(new BoxLayout(panelh1, BoxLayout.X_AXIS));
 		panelh1.setBackground(Color.LIGHT_GRAY);
+		//panelh1.setOpaque(false);
 		
 		separadorv1.setPreferredSize(new Dimension(300, 40));
 		
@@ -96,6 +98,29 @@ public class WLogin extends JFrame {
 		        }
 		    }
 		});
+		
+		pass.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				System.out.println("sale");
+                pass.setEchoChar((char) 0); // Sin ocultar
+                pass.setText("Contraseña");
+                pass.setForeground(Color.GRAY);
+                
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				System.out.println("entra");
+                pass.setText("");
+                pass.setEchoChar('•'); // Activa el ocultamiento
+                pass.setForeground(Color.BLACK);
+                
+			}
+		});
+		
+		
 		
 		//aplica a la ventana principal
 		fondo.add(panelv1);

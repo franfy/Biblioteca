@@ -8,13 +8,44 @@ import javax.swing.table.*;
 
 public class WPrime2 extends JFrame{
 
+	//Imports para el funcionamiento de la GUI
 	protected static JPanel PanelPadre = new JPanel(new BorderLayout());
 	protected static JPanel PanelLocal = new JPanel(new GridBagLayout());
-	protected static JPanel panelTabla = new JPanel(new BorderLayout());
+	protected static JPanel PanelTabla = new JPanel(new BorderLayout());
 	protected static LGestor logica = new LGestor();
-	protected static Color[] coloresDireccion = {Color.white, Color.LIGHT_GRAY, Color.GRAY, Color.GREEN, Color.BLUE, Color.CYAN};
-	protected static String[] coloresLetras = {"Blanco", "Gris Claro", "Gris", "Verde", "Azul", "Cyan"};
-	protected static JComboBox temas = new JComboBox(coloresLetras);
+	
+	//Imports de la ventana principal
+	protected static JTabbedPane herramientas = new JTabbedPane(JTabbedPane.TOP);
+	
+	protected static JPanel menuRegistrar = new JPanel();
+	protected static JPanel menuBaja = new JPanel();
+	protected static JPanel menuListar = new JPanel();
+	protected static JPanel menuPrestamo = new JPanel();
+	protected static JPanel menuConfiguracion = new JPanel();
+	protected static JPanel menuOtros = new JPanel();
+	
+	protected static JButton btnRegistrarLibro = new JButton("Registrar Libro");
+	protected static JButton btnRegistrarComputadora = new JButton("Registrar Computadora");
+	protected static JButton btnBajaLibro = new JButton("Dar de baja Libro");
+	protected static JButton btnBajaComputadora = new JButton("Dar de baja Computadora");
+	protected static JButton btnListarLibro = new JButton("Listar Libros");
+	protected static JButton btnListarComputadora = new JButton("Listar Computadora");
+	protected static JButton btnConfiguracionTemas = new JButton("Temas");
+	protected static JButton btnConfiguracionBarraLateral = new JButton("Barra Lateral");
+	protected static JButton btnPrestamoLibro = new JButton("Hacer prestamo de Libro");
+	protected static JButton btnPrestamoComputadora = new JButton("Hacer prestamo de Computadora");
+	protected static JButton btnOtrosManual = new JButton("Acceder al manual de usuario");
+	
+	
+	//Objetos para la personalizacion del programa
+	protected static Tema[] Temas = { /* Fondo, Botones, Letras*/
+		    new Tema(Color.WHITE, new Color(224,244,244), Color.BLACK),// Claro
+		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,224,224)),// Oscuro
+		    new Tema(new Color(15,138,76), new Color(0,153,76), Color.WHITE)// Verde Aqua
+		};
+	protected static String[] coloresNombres = {"Claro", "Oscuro", "Verde Aqua"};
+	protected static int colorIndex;
+	protected static JComboBox temasEleccion = new JComboBox(coloresNombres);
 	
 
 	public WPrime2() {
@@ -35,36 +66,15 @@ public class WPrime2 extends JFrame{
 		
 		
 		// Llamado a las funciones
-		tab();
-		systemInfo();
-
-		
+		Ftab();
 
 	}
 		
-	public static void tab() {
+	public static void Ftab() {
 		
 		
 		//Imports
-		JTabbedPane herramientas = new JTabbedPane(JTabbedPane.TOP);
-		
-		JPanel menuRegistrar = new JPanel();
-		JPanel menuBaja = new JPanel();
-		JPanel menuListar = new JPanel();
-		JPanel menuPrestamo = new JPanel();
-		JPanel menuConfiguracion = new JPanel();
-		JPanel menuOtros = new JPanel();
-		
-		JButton btnRegistrarLibro = new JButton("Registrar Libro");
-		JButton btnRegistrarComputadora = new JButton("Registrar Computadora");
-		JButton btnBajaLibro = new JButton("Dar de baja Libro");
-		JButton btnBajaComputadora = new JButton("Dar de baja Computadora");
-		JButton btnListarLibro = new JButton("Listar Libros");
-		JButton btnListarComputadora = new JButton("Listar Computadora");
-		JButton btnConfiguracionTemas = new JButton("Temas");
-		JButton btnPrestamoLibro = new JButton("Hacer prestamo de Libro");
-		JButton btnPrestamoComputadora = new JButton("Hacer prestamo de Computadora");
-		JButton btnOtrosManual = new JButton("Acceder al manual de usuario");
+		//Presentes antes del constructor
 		
 		
 		//Setters
@@ -75,16 +85,17 @@ public class WPrime2 extends JFrame{
 		menuConfiguracion.setLayout(new BoxLayout(menuConfiguracion, BoxLayout.X_AXIS));
 		menuOtros.setLayout(new BoxLayout(menuOtros, BoxLayout.X_AXIS));
 		
-		Negrita(btnRegistrarLibro, 16);
-		Negrita(btnRegistrarComputadora, 16);
-		Negrita(btnBajaLibro, 16);
-		Negrita(btnBajaComputadora, 16);
-		Negrita(btnListarLibro, 16);
-		Negrita(btnListarComputadora, 16);
-		Negrita(btnConfiguracionTemas, 16);
-		Negrita(btnPrestamoLibro, 16);
-		Negrita(btnPrestamoComputadora, 16);
-		Negrita(btnOtrosManual, 16);
+		FNegrita(btnRegistrarLibro, 16);
+		FNegrita(btnRegistrarComputadora, 16);
+		FNegrita(btnBajaLibro, 16);
+		FNegrita(btnBajaComputadora, 16);
+		FNegrita(btnListarLibro, 16);
+		FNegrita(btnListarComputadora, 16);
+		FNegrita(btnConfiguracionTemas, 16);
+		FNegrita(btnConfiguracionBarraLateral, 16);
+		FNegrita(btnPrestamoLibro, 16);
+		FNegrita(btnPrestamoComputadora, 16);
+		FNegrita(btnOtrosManual, 16);
 		
 		
 		//Adds
@@ -101,6 +112,7 @@ public class WPrime2 extends JFrame{
 		menuPrestamo.add(btnPrestamoComputadora);
 		
 		menuConfiguracion.add(btnConfiguracionTemas);
+		menuConfiguracion.add(btnConfiguracionBarraLateral);
 		
 		menuOtros.add(btnOtrosManual);
 		
@@ -182,6 +194,15 @@ public class WPrime2 extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FConfiguracionTemas();
+				
+			}
+		});
+		
+		btnConfiguracionBarraLateral.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FConfiguracionBarraLateral();
 			}
 		});
 		
@@ -191,26 +212,25 @@ public class WPrime2 extends JFrame{
 	
 	
 	
-	public static void Negrita(JComponent componente, int tamano) {
+	public static void FNegrita(JComponent componente, int tamano) {
 		Font fuenteActual = componente.getFont();
 		Font fuenteNegrita = new Font(fuenteActual.getName(), Font.BOLD, tamano);
 		componente.setFont(fuenteNegrita);
 	}
 	
 	
-	
-	public static void Tema() {
-		
-	}
-	
-	
-	
-	public static void systemInfo() {
+	/*
+	 * FUNCION FsystemInfo
+	 * INPUT:
+	 * OUTPUT:
+	 * ESTADO: descartada
+	 * Esta funcion fue descartada al no proporcionar informacion realmente valiosa para el usuario final, ademas de ser una molestia visualmente hablando
+	 */
+	/*public static void FsystemInfo() {
 
 		
 		// Imports
 		Runtime datos = Runtime.getRuntime();
-		JPanel Panelv1 = new JPanel();
 		JLabel label1 = new JLabel("SO: Windows 10 IOT LTSC");
 		JLabel label2 = new JLabel("Version del SO: 22H2");
 		JLabel label3 = new JLabel("Version del SoftWare: 0.1 Prototype 16/8/2025");
@@ -222,20 +242,24 @@ public class WPrime2 extends JFrame{
 
 		
 		// Setters
-		Panelv1.setLayout(new BoxLayout(Panelv1, BoxLayout.Y_AXIS));
-			
+		PanelSystemInfo.setLayout(new BoxLayout(PanelSystemInfo, BoxLayout.Y_AXIS));
+		
 		label4.setText("Uso de la memoria: " + memoriaDisponible + "MB");
-
+		
 		
 		// Adds
-		Panelv1.add(label1);
-		Panelv1.add(label2);
-		Panelv1.add(label3);
-		Panelv1.add(label4);
+		PanelSystemInfo.removeAll();
+		PanelSystemInfo.add(label1);
+		PanelSystemInfo.add(label2);
+		PanelSystemInfo.add(label3);
+		PanelSystemInfo.add(label4);
 
 		// Aplicar al PanelPadre
-		PanelPadre.add(Panelv1, BorderLayout.SOUTH);
-	}
+		PanelPadre.add(PanelSystemInfo, BorderLayout.SOUTH);
+		PanelPadre.revalidate();
+		PanelPadre.repaint();
+		
+	}*/
 	
 	
 	
@@ -305,8 +329,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -370,8 +393,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -431,8 +453,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -492,8 +513,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -537,11 +557,11 @@ public class WPrime2 extends JFrame{
         }
         
         //Se visualiza en la ventana
-        PanelLocal.setVisible(false);
-        PanelPadre.add(panelTabla);
-        panelTabla.removeAll();
-        panelTabla.add(tabla);
-      	panelTabla.setVisible(true);
+		FestablecePaneles(false, false);
+        PanelPadre.add(PanelTabla);
+        PanelTabla.removeAll();
+        PanelTabla.add(tabla);
+      	PanelTabla.setVisible(true);
       	PanelPadre.revalidate();
       	PanelPadre.repaint();
         
@@ -581,11 +601,11 @@ public class WPrime2 extends JFrame{
 		}
 
 		//Se visualiza en la ventana
-		PanelLocal.setVisible(false);
-		PanelPadre.add(panelTabla);
-		panelTabla.removeAll();
-		panelTabla.add(tabla);
-		panelTabla.setVisible(true);
+		FestablecePaneles(false, false);
+		PanelPadre.add(PanelTabla);
+		PanelTabla.removeAll();
+		PanelTabla.add(tabla);
+		PanelTabla.setVisible(true);
 		PanelPadre.revalidate();
 		PanelPadre.repaint();
 	}
@@ -652,8 +672,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -723,8 +742,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -737,41 +755,151 @@ public class WPrime2 extends JFrame{
 	public static void FConfiguracionTemas() {
 		
 		
-		//Imports
+		//imports
 		JPanel panelVertical1 = new JPanel();
 		
 		JLabel label1 = new JLabel("Selecciona tu tema de fondo");
 		
 		JButton Aplicar = new JButton("Aplicar cambios");
 		
+		JCheckBox AplicarABarraHerramita = new JCheckBox("Aplicar a la barra de herramientas");
+		JCheckBox AplicarABotonesBarraHerramienta = new JCheckBox("Aplicar a los botones de la barra de herramientas");
+		JCheckBox AplicarAFondoBarraHerramienta = new JCheckBox("Aplicar al fondo de los botones de la barra de herramientas");
+		
 		
 		//setters
 		panelVertical1.setLayout(new BoxLayout(panelVertical1, BoxLayout.Y_AXIS));
+		panelVertical1.add(label1);
+		panelVertical1.add(temasEleccion);
+		panelVertical1.add(AplicarABarraHerramita);
+		panelVertical1.add(AplicarABotonesBarraHerramienta);
+		panelVertical1.add(AplicarAFondoBarraHerramienta);
+		panelVertical1.add(Aplicar);
 		
 		
 		//adds
-		panelVertical1.add(label1);
-		panelVertical1.add(temas);
-		panelVertical1.add(Aplicar);
 		
+		
+		//Eventos
 		Aplicar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var index = temas.getSelectedIndex();
-				PanelPadre.setBackground(coloresDireccion[index]);
-				PanelLocal.setBackground(coloresDireccion[index]);
-				panelTabla.setBackground(coloresDireccion[index]);
+				colorIndex = temasEleccion.getSelectedIndex();
+				
+				//Tema para PanelPadre
+				PanelPadre.setBackground(Temas[colorIndex].getFondo());
+				PanelLocal.setBackground(Temas[colorIndex].getFondo());
+				
+				//Tema para la barra de herramientas
+				if (AplicarABarraHerramita.isSelected()) {
+					herramientas.setBackground(Temas[colorIndex].getFondo());
+					
+				} else {
+					herramientas.setBackground(Temas[0].getFondo());
+					
+				}
+				
+				//Tema para los botones de la barra de herramientas
+				if (AplicarAFondoBarraHerramienta.isSelected()) {
+					//Aplicar fondo
+					menuRegistrar.setBackground(Temas[colorIndex].getFondo());
+					menuBaja.setBackground(Temas[colorIndex].getFondo());
+					menuListar.setBackground(Temas[colorIndex].getFondo());
+					menuPrestamo.setBackground(Temas[colorIndex].getFondo());
+					menuConfiguracion.setBackground(Temas[colorIndex].getFondo());
+					menuOtros.setBackground(Temas[colorIndex].getFondo());
+					
+				} else {
+					//Aplicar fondo predefinido
+					menuRegistrar.setBackground(Temas[0].getFondo());
+					menuBaja.setBackground(Temas[0].getFondo());
+					menuListar.setBackground(Temas[0].getFondo());
+					menuPrestamo.setBackground(Temas[0].getFondo());
+					menuConfiguracion.setBackground(Temas[0].getFondo());
+					menuOtros.setBackground(Temas[0].getFondo());
+					
+				}
+				
+				//Tema para los botones de la barra de herramientas
+				if (AplicarABotonesBarraHerramienta.isSelected()) {
+					//set fondo
+					btnRegistrarLibro.setBackground(Temas[colorIndex].getFondo());
+					btnRegistrarComputadora.setBackground(Temas[colorIndex].getFondo());
+					btnBajaLibro.setBackground(Temas[colorIndex].getFondo());
+					btnBajaComputadora.setBackground(Temas[colorIndex].getFondo());
+					btnListarLibro.setBackground(Temas[colorIndex].getFondo());
+					btnListarComputadora.setBackground(Temas[colorIndex].getFondo());
+					btnPrestamoLibro.setBackground(Temas[colorIndex].getFondo());
+					btnPrestamoComputadora.setBackground(Temas[colorIndex].getFondo());
+					btnConfiguracionTemas.setBackground(Temas[colorIndex].getFondo());
+					btnConfiguracionBarraLateral.setBackground(Temas[colorIndex].getFondo());
+					btnOtrosManual.setBackground(Temas[colorIndex].getFondo());
+					
+					//set botones
+					btnRegistrarLibro.setForeground(Temas[colorIndex].getLetras());
+					btnRegistrarComputadora.setForeground(Temas[colorIndex].getLetras());
+					btnBajaLibro.setForeground(Temas[colorIndex].getLetras());
+					btnBajaComputadora.setForeground(Temas[colorIndex].getLetras());
+					btnListarLibro.setForeground(Temas[colorIndex].getLetras());
+					btnListarComputadora.setForeground(Temas[colorIndex].getLetras());
+					btnPrestamoLibro.setForeground(Temas[colorIndex].getLetras());
+					btnPrestamoComputadora.setForeground(Temas[colorIndex].getLetras());
+					btnConfiguracionTemas.setForeground(Temas[colorIndex].getLetras());
+					btnConfiguracionBarraLateral.setForeground(Temas[colorIndex].getLetras());
+					btnOtrosManual.setForeground(Temas[colorIndex].getLetras());
+					
+					
+				} else {
+					//fondo a los botones predefinidos
+					btnRegistrarLibro.setBackground(Temas[0].getFondo());
+					btnRegistrarComputadora.setBackground(Temas[0].getFondo());
+					btnRegistrarLibro.setForeground(Temas[0].getLetras());
+					btnRegistrarComputadora.setForeground(Temas[0].getLetras());
+					btnBajaLibro.setBackground(Temas[0].getFondo());
+					btnBajaComputadora.setBackground(Temas[0].getFondo());
+					btnListarLibro.setBackground(Temas[0].getFondo());
+					btnListarComputadora.setBackground(Temas[0].getFondo());
+					btnPrestamoLibro.setBackground(Temas[0].getFondo());
+					btnPrestamoComputadora.setBackground(Temas[0].getFondo());
+					btnConfiguracionTemas.setBackground(Temas[0].getFondo());
+					btnConfiguracionBarraLateral.setBackground(Temas[0].getFondo());
+					btnOtrosManual.setBackground(Temas[0].getFondo());
+					
+					//color de letras de los botones
+					btnRegistrarLibro.setForeground(Temas[0].getLetras());
+					btnRegistrarComputadora.setForeground(Temas[0].getLetras());
+					btnBajaLibro.setForeground(Temas[0].getLetras());
+					btnBajaComputadora.setForeground(Temas[0].getLetras());
+					btnListarLibro.setForeground(Temas[0].getLetras());
+					btnListarComputadora.setForeground(Temas[0].getLetras());
+					btnPrestamoLibro.setForeground(Temas[0].getLetras());
+					btnPrestamoComputadora.setForeground(Temas[0].getLetras());
+					btnConfiguracionTemas.setForeground(Temas[0].getLetras());
+					btnConfiguracionBarraLateral.setForeground(Temas[0].getLetras());
+					btnOtrosManual.setForeground(Temas[0].getLetras());
+					
+				}
+				
+				
 			}
 		});
 		
+		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
+		PanelLocal.revalidate();
+		PanelLocal.repaint();
 		PanelPadre.revalidate();
 		PanelPadre.repaint();
+	}
+	
+	
+	
+	public static void FConfiguracionBarraLateral() {
+		
 	}
 	
 	
@@ -794,7 +922,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		panelTabla.setVisible(false);
+		PanelTabla.setVisible(false);
 		PanelLocal.setVisible(true);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
@@ -802,4 +930,29 @@ public class WPrime2 extends JFrame{
 		PanelPadre.repaint();
 		
 	}
+	
+	
+	
+	public static void FcambiarColorTexto(JComponent componente, Color colorTexto) {
+	    if (componente != null) {
+	        componente.setForeground(colorTexto);
+	    }
+	}
+	
+	
+	
+	public static void FcambiarColorFondo(JComponent componente, Color colorFondo) {
+	    if (componente != null) {
+	        componente.setBackground(colorFondo);
+	        componente.setOpaque(true); // Asegura que el fondo sea visible
+	    }
+	}
+	
+	
+	
+	public static void FestablecePaneles(boolean panel1, boolean panel2) {
+		PanelLocal.setVisible(panel1);
+		PanelTabla.setVisible(panel2);
+	}
+
 }
