@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 public class WPrime2 extends JFrame{
 
@@ -31,7 +32,7 @@ public class WPrime2 extends JFrame{
 	protected static JButton btnListarLibro = new JButton("Listar Libros");
 	protected static JButton btnListarComputadora = new JButton("Listar Computadora");
 	protected static JButton btnConfiguracionTemas = new JButton("Temas");
-	protected static JButton btnConfiguracionBarraLateral = new JButton("Barra Lateral");
+	protected static JButton btnConfiguracionHistorial = new JButton("Historial");
 	protected static JButton btnPrestamoLibro = new JButton("Hacer prestamo de Libro");
 	protected static JButton btnPrestamoComputadora = new JButton("Hacer prestamo de Computadora");
 	protected static JButton btnOtrosManual = new JButton("Acceder al manual de usuario");
@@ -39,13 +40,15 @@ public class WPrime2 extends JFrame{
 	
 	//Objetos para la personalizacion del programa
 	protected static Tema[] Temas = { /* Fondo, Botones, Letras*/
-		    new Tema(Color.WHITE, new Color(224,244,244), Color.BLACK),// Claro
-		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,224,224)),// Oscuro
-		    new Tema(new Color(15,138,76), new Color(0,153,76), Color.WHITE)// Verde Aqua
+		    new Tema(Color.WHITE, new Color(180,180,180), Color.BLACK),// Claro
+		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,244,244)),// Oscuro
+		    new Tema(new Color(15,138,76),new Color(10, 100, 10), Color.BLACK)// Verde Aqua
 		};
 	protected static String[] coloresNombres = {"Claro", "Oscuro", "Verde Aqua"};
 	protected static int colorIndex;
+	protected static int colorIndexBotones;
 	protected static JComboBox temasEleccion = new JComboBox(coloresNombres);
+	protected static JComboBox temasEleccionBotones = new JComboBox(coloresNombres);
 	
 
 	public WPrime2() {
@@ -67,7 +70,16 @@ public class WPrime2 extends JFrame{
 		
 		// Llamado a las funciones
 		Ftab();
-
+		
+		// Mensaje emergente informativo
+	    JOptionPane.showMessageDialog(
+	        this, 
+	        "Si tienes alguna duda o te sientes perdido,\n" +
+	        "pon el mouse encima de algo que te llame la atención\n" +
+	        "y te dará información.", 
+	        "Información", 
+	        JOptionPane.INFORMATION_MESSAGE
+	    );
 	}
 		
 	public static void Ftab() {
@@ -85,6 +97,18 @@ public class WPrime2 extends JFrame{
 		menuConfiguracion.setLayout(new BoxLayout(menuConfiguracion, BoxLayout.X_AXIS));
 		menuOtros.setLayout(new BoxLayout(menuOtros, BoxLayout.X_AXIS));
 		
+		FhacerRedondeado(btnRegistrarLibro, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnRegistrarComputadora, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnBajaLibro, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnBajaComputadora, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnListarLibro, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnListarComputadora, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnPrestamoLibro, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnPrestamoComputadora, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnConfiguracionTemas, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnConfiguracionHistorial, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(btnOtrosManual, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		FNegrita(btnRegistrarLibro, 16);
 		FNegrita(btnRegistrarComputadora, 16);
 		FNegrita(btnBajaLibro, 16);
@@ -92,7 +116,7 @@ public class WPrime2 extends JFrame{
 		FNegrita(btnListarLibro, 16);
 		FNegrita(btnListarComputadora, 16);
 		FNegrita(btnConfiguracionTemas, 16);
-		FNegrita(btnConfiguracionBarraLateral, 16);
+		FNegrita(btnConfiguracionHistorial, 16);
 		FNegrita(btnPrestamoLibro, 16);
 		FNegrita(btnPrestamoComputadora, 16);
 		FNegrita(btnOtrosManual, 16);
@@ -112,7 +136,7 @@ public class WPrime2 extends JFrame{
 		menuPrestamo.add(btnPrestamoComputadora);
 		
 		menuConfiguracion.add(btnConfiguracionTemas);
-		menuConfiguracion.add(btnConfiguracionBarraLateral);
+		//menuConfiguracion.add(btnConfiguracionBarraLateral);
 		
 		menuOtros.add(btnOtrosManual);
 		
@@ -198,11 +222,19 @@ public class WPrime2 extends JFrame{
 			}
 		});
 		
-		btnConfiguracionBarraLateral.addActionListener(new ActionListener() {
+		btnConfiguracionHistorial.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FConfiguracionBarraLateral();
+				FConfiguracionHistorial();
+			}
+		});
+		
+		btnOtrosManual.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FManualUsuario();
 			}
 		});
 		
@@ -294,24 +326,37 @@ public class WPrime2 extends JFrame{
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
 		
+		LabelISBN.setForeground(Temas[colorIndex].getLetras());
+		LabelTitulo.setForeground(Temas[colorIndex].getLetras());
+		LabelAutor.setForeground(Temas[colorIndex].getLetras());
+		LabelGenero.setForeground(Temas[colorIndex].getLetras());
+		LabelMateria.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		panelVertical2.add(LabelISBN);
 		panelVertical2.add(LabelTitulo);
 		panelVertical2.add(LabelAutor);
 		panelVertical2.add(LabelGenero);
 		panelVertical2.add(LabelMateria);
+		panelVertical2.setOpaque(false);
 		
 		panelVertical3.add(InputISBN);
 		panelVertical3.add(InputTitulo);
 		panelVertical3.add(InputAutor);
 		panelVertical3.add(InputGenero);
 		panelVertical3.add(InputMateria);
+		panelVertical3.setOpaque(false);
 		
 		panelHorizontal1.add(panelVertical2);
 		panelHorizontal1.add(panelVertical3);
+		panelHorizontal1.setOpaque(false);
 		
 		panelVertical1.add(panelHorizontal1);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
+		panelVertical1.setOpaque(false);
 		
 		
 		//eventos
@@ -364,18 +409,28 @@ public class WPrime2 extends JFrame{
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
 		
+		LabelNroSerie.setForeground(Temas[colorIndex].getLetras());
+		LabelModelo.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		panelVertical2.add(LabelNroSerie);
 		panelVertical2.add(LabelModelo);
+		panelVertical2.setOpaque(false);
 		
 		panelVertical3.add(InputNroSerie);
 		panelVertical3.add(InputModelo);
+		panelVertical3.setOpaque(false);
 		
 		panelHorizontal1.add(panelVertical2);
 		panelHorizontal1.add(panelVertical3);
+		panelHorizontal1.setOpaque(false);
 		
 		panelVertical1.add(panelHorizontal1);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
+		panelVertical1.setOpaque(false);
 		
 		
 		//eventos
@@ -426,16 +481,25 @@ public class WPrime2 extends JFrame{
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
 		
+		LabelISBN.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		panelVertical2.add(LabelISBN);
+		panelVertical2.setOpaque(false);
 		
 		panelVertical3.add(InputISBN);
+		panelVertical3.setOpaque(false);
 		
 		panelHorizontal1.add(panelVertical2);
 		panelHorizontal1.add(panelVertical3);
+		panelHorizontal1.setOpaque(false);
 		
 		panelVertical1.add(panelHorizontal1);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
+		panelVertical1.setOpaque(false);
 		
 		
 		//eventos
@@ -486,6 +550,21 @@ public class WPrime2 extends JFrame{
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
 		
+		LabelNroSerie.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
+		panelVertical2.setOpaque(false);
+		
+		panelVertical3.setOpaque(false);
+		
+		panelHorizontal1.setOpaque(false);
+		
+		panelVertical1.setOpaque(false);
+		
+		
+		//Adds
 		panelVertical2.add(LabelNroSerie);
 		
 		panelVertical3.add(InputNroSerie);
@@ -496,7 +575,6 @@ public class WPrime2 extends JFrame{
 		panelVertical1.add(panelHorizontal1);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
-		
 		
 		//eventos
 		Registrar.addActionListener(new ActionListener() {
@@ -534,6 +612,10 @@ public class WPrime2 extends JFrame{
 		//Imports
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
+		JScrollPane scroll = new JScrollPane(tabla);
+		
+		
+		//setters
 		
 		
 		//adds
@@ -557,11 +639,10 @@ public class WPrime2 extends JFrame{
         }
         
         //Se visualiza en la ventana
-		FestablecePaneles(false, false);
         PanelPadre.add(PanelTabla);
         PanelTabla.removeAll();
-        PanelTabla.add(tabla);
-      	PanelTabla.setVisible(true);
+        PanelTabla.add(scroll);
+        FestablecePaneles(false, true);
       	PanelPadre.revalidate();
       	PanelPadre.repaint();
         
@@ -579,8 +660,11 @@ public class WPrime2 extends JFrame{
 		
 		//Imports
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-		
 		JTable tabla = new JTable(modelo);
+		JScrollPane scroll = new JScrollPane(tabla);
+		
+		
+		//setters
 		
 		
 		//adds
@@ -601,11 +685,10 @@ public class WPrime2 extends JFrame{
 		}
 
 		//Se visualiza en la ventana
-		FestablecePaneles(false, false);
 		PanelPadre.add(PanelTabla);
 		PanelTabla.removeAll();
-		PanelTabla.add(tabla);
-		PanelTabla.setVisible(true);
+		PanelTabla.add(scroll);
+		FestablecePaneles(false, true);
 		PanelPadre.revalidate();
 		PanelPadre.repaint();
 	}
@@ -638,6 +721,21 @@ public class WPrime2 extends JFrame{
 		panelVertical2.setLayout(new BoxLayout(panelVertical2, BoxLayout.Y_AXIS));
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
+		
+		LabelISBN.setForeground(Temas[colorIndex].getLetras());
+		LabelInicio.setForeground(Temas[colorIndex].getLetras());
+		LabelFinal.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Realizar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
+		panelVertical1.setOpaque(false);
+		
+		panelVertical2.setOpaque(false);
+		
+		panelVertical3.setOpaque(false);
+		
+		panelHorizontal1.setOpaque(false);
 		
 		
 		//Adds
@@ -709,6 +807,21 @@ public class WPrime2 extends JFrame{
 		panelVertical3.setLayout(new BoxLayout(panelVertical3, BoxLayout.Y_AXIS));
 		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
 		
+		FhacerRedondeado(Realizar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
+		LabelNroSerie.setForeground(Temas[colorIndex].getLetras());
+		LabelInicio.setForeground(Temas[colorIndex].getLetras());
+		LabelFinal.setForeground(Temas[colorIndex].getLetras());
+		LabelResultado.setForeground(Temas[colorIndex].getLetras());
+		
+		panelVertical1.setOpaque(false);
+		
+		panelVertical2.setOpaque(false);
+		
+		panelVertical3.setOpaque(false);
+		
+		panelHorizontal1.setOpaque(false);
+		
 		
 		//Adds
 		panelVertical1.add(panelHorizontal1);
@@ -757,27 +870,62 @@ public class WPrime2 extends JFrame{
 		
 		//imports
 		JPanel panelVertical1 = new JPanel();
+		JPanel panelHorizontal1 = new JPanel();
+		JPanel panelHorizontal2 = new JPanel();
+		JPanel panelHorizontal3 = new JPanel();
 		
 		JLabel label1 = new JLabel("Selecciona tu tema de fondo");
+		JLabel label2 = new JLabel("Selecciona tu tema para los botones");
 		
 		JButton Aplicar = new JButton("Aplicar cambios");
+		JButton Revertir = new JButton("Revertir cambios");
 		
-		JCheckBox AplicarABarraHerramita = new JCheckBox("Aplicar a la barra de herramientas");
-		JCheckBox AplicarABotonesBarraHerramienta = new JCheckBox("Aplicar a los botones de la barra de herramientas");
-		JCheckBox AplicarAFondoBarraHerramienta = new JCheckBox("Aplicar al fondo de los botones de la barra de herramientas");
+		JCheckBox AplicarFondoBarraHerramienta = new JCheckBox("Aplicar a los botones de la barra de herramientas");
 		
 		
 		//setters
+		FcambiarColorTexto(label1, Temas[colorIndex].getLetras());
+		FcambiarColorTexto(label2, Temas[colorIndex].getLetras());
+		FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Aplicar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
+		FhacerRedondeado(Revertir, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		panelVertical1.setLayout(new BoxLayout(panelVertical1, BoxLayout.Y_AXIS));
-		panelVertical1.add(label1);
-		panelVertical1.add(temasEleccion);
-		panelVertical1.add(AplicarABarraHerramita);
-		panelVertical1.add(AplicarABotonesBarraHerramienta);
-		panelVertical1.add(AplicarAFondoBarraHerramienta);
-		panelVertical1.add(Aplicar);
+		panelVertical1.setOpaque(false);
+		
+		panelHorizontal1.setLayout(new BoxLayout(panelHorizontal1, BoxLayout.X_AXIS));
+		panelHorizontal1.setOpaque(false);
+		
+		panelHorizontal2.setLayout(new BoxLayout(panelHorizontal2, BoxLayout.X_AXIS));
+		panelHorizontal2.setOpaque(false);
+		
+		panelHorizontal3.setLayout(new BoxLayout(panelHorizontal3, BoxLayout.X_AXIS));
+		panelHorizontal3.setOpaque(false);
+		
+		AplicarFondoBarraHerramienta.setToolTipText("Aplica el color que tengas seleccionado para el tema de fondo en la barra de herramientas");
+		AplicarFondoBarraHerramienta.setOpaque(false);
+		
+		Aplicar.setToolTipText("Presiona para aplicar los cambios que hayas realizado");
+		
+		Revertir.setToolTipText("Presiona para revertir TODOS los cambios de los temas que hayas realizado");
 		
 		
 		//adds
+		panelVertical1.add(panelHorizontal1);
+		panelVertical1.add(panelHorizontal2);
+		panelVertical1.add(AplicarFondoBarraHerramienta);
+		panelVertical1.add(panelHorizontal3);
+		
+		panelHorizontal1.add(label1);
+		panelHorizontal1.add(temasEleccion);
+		
+		panelHorizontal2.add(label2);
+		panelHorizontal2.add(temasEleccionBotones);
+		
+		panelHorizontal3.add(Aplicar);
+		panelHorizontal3.add(Revertir);
 		
 		
 		//Eventos
@@ -786,101 +934,80 @@ public class WPrime2 extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				colorIndex = temasEleccion.getSelectedIndex();
+				colorIndexBotones = temasEleccionBotones.getSelectedIndex();
 				
-				//Tema para PanelPadre
+				//Tema para PanelPadre y Panel Local
 				PanelPadre.setBackground(Temas[colorIndex].getFondo());
 				PanelLocal.setBackground(Temas[colorIndex].getFondo());
 				
-				//Tema para la barra de herramientas
-				if (AplicarABarraHerramita.isSelected()) {
-					herramientas.setBackground(Temas[colorIndex].getFondo());
-					
-				} else {
-					herramientas.setBackground(Temas[0].getFondo());
+				//Cambia botones y label del menu de configuracion
+				FcambiarColorTexto(label1, Temas[colorIndex].getLetras());
+				FcambiarColorTexto(label2, Temas[colorIndex].getLetras());
+				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndex].getLetras());
+				FhacerRedondeado(Aplicar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+				
+				//Aplica el cambio de los temas a todo lo demas
+				FhacerRedondeado(btnRegistrarLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnRegistrarComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnBajaLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnBajaComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnListarLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnListarComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnPrestamoLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnPrestamoComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnConfiguracionTemas, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnConfiguracionHistorial, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnOtrosManual, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				
+				//Si esta precionado entonces cambia de color la barra que esta detras de los botones
+				if (AplicarFondoBarraHerramienta.isSelected()) {
+					FcambiarColorFondo(menuRegistrar, Temas[colorIndex].getFondo());
+					FcambiarColorFondo(menuBaja, Temas[colorIndex].getFondo());
+					FcambiarColorFondo(menuListar, Temas[colorIndex].getFondo());
+					FcambiarColorFondo(menuPrestamo, Temas[colorIndex].getFondo());
+					FcambiarColorFondo(menuConfiguracion, Temas[colorIndex].getFondo());
+					FcambiarColorFondo(menuOtros, Temas[colorIndex].getFondo());
 					
 				}
 				
-				//Tema para los botones de la barra de herramientas
-				if (AplicarAFondoBarraHerramienta.isSelected()) {
-					//Aplicar fondo
-					menuRegistrar.setBackground(Temas[colorIndex].getFondo());
-					menuBaja.setBackground(Temas[colorIndex].getFondo());
-					menuListar.setBackground(Temas[colorIndex].getFondo());
-					menuPrestamo.setBackground(Temas[colorIndex].getFondo());
-					menuConfiguracion.setBackground(Temas[colorIndex].getFondo());
-					menuOtros.setBackground(Temas[colorIndex].getFondo());
-					
-				} else {
-					//Aplicar fondo predefinido
-					menuRegistrar.setBackground(Temas[0].getFondo());
-					menuBaja.setBackground(Temas[0].getFondo());
-					menuListar.setBackground(Temas[0].getFondo());
-					menuPrestamo.setBackground(Temas[0].getFondo());
-					menuConfiguracion.setBackground(Temas[0].getFondo());
-					menuOtros.setBackground(Temas[0].getFondo());
-					
-				}
+			}
+		});
+		
+		Revertir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				
-				//Tema para los botones de la barra de herramientas
-				if (AplicarABotonesBarraHerramienta.isSelected()) {
-					//set fondo
-					btnRegistrarLibro.setBackground(Temas[colorIndex].getFondo());
-					btnRegistrarComputadora.setBackground(Temas[colorIndex].getFondo());
-					btnBajaLibro.setBackground(Temas[colorIndex].getFondo());
-					btnBajaComputadora.setBackground(Temas[colorIndex].getFondo());
-					btnListarLibro.setBackground(Temas[colorIndex].getFondo());
-					btnListarComputadora.setBackground(Temas[colorIndex].getFondo());
-					btnPrestamoLibro.setBackground(Temas[colorIndex].getFondo());
-					btnPrestamoComputadora.setBackground(Temas[colorIndex].getFondo());
-					btnConfiguracionTemas.setBackground(Temas[colorIndex].getFondo());
-					btnConfiguracionBarraLateral.setBackground(Temas[colorIndex].getFondo());
-					btnOtrosManual.setBackground(Temas[colorIndex].getFondo());
-					
-					//set botones
-					btnRegistrarLibro.setForeground(Temas[colorIndex].getLetras());
-					btnRegistrarComputadora.setForeground(Temas[colorIndex].getLetras());
-					btnBajaLibro.setForeground(Temas[colorIndex].getLetras());
-					btnBajaComputadora.setForeground(Temas[colorIndex].getLetras());
-					btnListarLibro.setForeground(Temas[colorIndex].getLetras());
-					btnListarComputadora.setForeground(Temas[colorIndex].getLetras());
-					btnPrestamoLibro.setForeground(Temas[colorIndex].getLetras());
-					btnPrestamoComputadora.setForeground(Temas[colorIndex].getLetras());
-					btnConfiguracionTemas.setForeground(Temas[colorIndex].getLetras());
-					btnConfiguracionBarraLateral.setForeground(Temas[colorIndex].getLetras());
-					btnOtrosManual.setForeground(Temas[colorIndex].getLetras());
-					
-					
-				} else {
-					//fondo a los botones predefinidos
-					btnRegistrarLibro.setBackground(Temas[0].getFondo());
-					btnRegistrarComputadora.setBackground(Temas[0].getFondo());
-					btnRegistrarLibro.setForeground(Temas[0].getLetras());
-					btnRegistrarComputadora.setForeground(Temas[0].getLetras());
-					btnBajaLibro.setBackground(Temas[0].getFondo());
-					btnBajaComputadora.setBackground(Temas[0].getFondo());
-					btnListarLibro.setBackground(Temas[0].getFondo());
-					btnListarComputadora.setBackground(Temas[0].getFondo());
-					btnPrestamoLibro.setBackground(Temas[0].getFondo());
-					btnPrestamoComputadora.setBackground(Temas[0].getFondo());
-					btnConfiguracionTemas.setBackground(Temas[0].getFondo());
-					btnConfiguracionBarraLateral.setBackground(Temas[0].getFondo());
-					btnOtrosManual.setBackground(Temas[0].getFondo());
-					
-					//color de letras de los botones
-					btnRegistrarLibro.setForeground(Temas[0].getLetras());
-					btnRegistrarComputadora.setForeground(Temas[0].getLetras());
-					btnBajaLibro.setForeground(Temas[0].getLetras());
-					btnBajaComputadora.setForeground(Temas[0].getLetras());
-					btnListarLibro.setForeground(Temas[0].getLetras());
-					btnListarComputadora.setForeground(Temas[0].getLetras());
-					btnPrestamoLibro.setForeground(Temas[0].getLetras());
-					btnPrestamoComputadora.setForeground(Temas[0].getLetras());
-					btnConfiguracionTemas.setForeground(Temas[0].getLetras());
-					btnConfiguracionBarraLateral.setForeground(Temas[0].getLetras());
-					btnOtrosManual.setForeground(Temas[0].getLetras());
-					
-				}
-				
+				//Tema para PanelPadre y Panel Local
+				PanelPadre.setBackground(Temas[0].getFondo());
+				PanelLocal.setBackground(Temas[0].getFondo());
+
+				//Cambia botones y label del menu de configuracion
+				FcambiarColorTexto(label1, Temas[0].getLetras());
+				FcambiarColorTexto(label2, Temas[0].getLetras());
+				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[0].getLetras());
+				FhacerRedondeado(Aplicar, Temas[0].getBotones(), Temas[0].getLetras());
+
+				//Aplica el cambio de los temas a todo lo demas
+				FhacerRedondeado(btnRegistrarLibro, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnRegistrarComputadora, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnBajaLibro, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnBajaComputadora, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnListarLibro, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnListarComputadora, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnPrestamoLibro, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnPrestamoComputadora, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnConfiguracionTemas, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnConfiguracionHistorial, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnOtrosManual, Temas[0].getBotones(), Temas[0].getLetras());
+
+				//Si esta presionado entonces cambia de color la barra que esta detras de los botones
+				FcambiarColorFondo(menuRegistrar, Temas[0].getFondo());
+				FcambiarColorFondo(menuBaja, Temas[0].getFondo());
+				FcambiarColorFondo(menuListar, Temas[0].getFondo());
+				FcambiarColorFondo(menuPrestamo, Temas[0].getFondo());
+				FcambiarColorFondo(menuConfiguracion, Temas[0].getFondo());
+				FcambiarColorFondo(menuOtros, Temas[0].getFondo());
 				
 			}
 		});
@@ -898,7 +1025,7 @@ public class WPrime2 extends JFrame{
 	
 	
 	
-	public static void FConfiguracionBarraLateral() {
+	public static void FConfiguracionHistorial() {
 		
 	}
 	
@@ -915,6 +1042,9 @@ public class WPrime2 extends JFrame{
 		
 		//setters
 		panelVertical1.setLayout(new BoxLayout(panelVertical1, BoxLayout.Y_AXIS));
+		panelVertical1.setOpaque(false);
+		
+		FcambiarColorTexto(labelResultado, Temas[colorIndex].getLetras());
 		
 		
 		//adds
@@ -922,8 +1052,7 @@ public class WPrime2 extends JFrame{
 		
 		
 		//Se visualiza en la ventana
-		PanelTabla.setVisible(false);
-		PanelLocal.setVisible(true);
+		FestablecePaneles(true, false);
 		PanelLocal.removeAll();
 		PanelLocal.add(panelVertical1);
 		PanelPadre.revalidate();
@@ -949,10 +1078,136 @@ public class WPrime2 extends JFrame{
 	}
 	
 	
-	
+	/*
+	 * FUNCION: FestablecePaneles
+	 * INPUT: boolean panel1, boolean panel2
+	 * OUTPUT:
+	 * 
+	 * Esta funcion esta diseñada para que se establezca que paneles mostrar y que paneles no mostrar, estableciendo
+	 * verdadera una u otra
+	 * 
+	 * -Franco
+	 */
 	public static void FestablecePaneles(boolean panel1, boolean panel2) {
 		PanelLocal.setVisible(panel1);
 		PanelTabla.setVisible(panel2);
 	}
+	
+	
+	/**
+     * Aplica estilo redondeado a un JButton con un color base y efectos de hover y presionado.
+     *
+     * @param b          El JButton al que se le aplicará el estilo.
+     * @param colorBase  El color base del botón.
+     *
+     * Nota:
+     * - El radio de redondeo se ajusta en la variable local 'radioEsquinas'.
+     * - El tamaño del botón se configura con setPreferredSize() fuera de esta función.
+     * 
+     * -ChatGPT
+     */
+	public static void FhacerRedondeado(JButton b, Color fondoNormal, Color textoNormal) {
+
+        int radioEsquinas = 20; // Ajusta este valor para el redondeo
+
+        // Calcular automáticamente colores derivados
+        Color fondoHover = Faclarar(fondoNormal, 0.15f);
+        Color fondoPresionado = Foscurecer(fondoNormal, 0.2f);
+
+        b.setContentAreaFilled(false);
+        b.setOpaque(false);
+        b.setFocusPainted(false);
+        b.setBorderPainted(false);
+        b.setBorder(null);
+
+        b.setUI(new BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                int w = c.getWidth();
+                int h = c.getHeight();
+
+                // Detectar estado del botón
+                ButtonModel model = ((AbstractButton) c).getModel();
+                Color colorFondo = fondoNormal;
+                Color colorTexto = textoNormal;
+
+                if (model.isPressed()) {
+                    colorFondo = fondoPresionado;
+                    colorTexto = FajustarContraste(colorFondo);
+                } else if (model.isRollover()) {
+                    colorFondo = fondoHover;
+                    colorTexto = FajustarContraste(colorFondo);
+                }
+
+                // Dibujar fondo redondeado
+                g2.setColor(colorFondo);
+                g2.fillRoundRect(0, 0, w, h, radioEsquinas, radioEsquinas);
+
+                g2.dispose();
+
+                // Cambiar color del texto según contraste
+                ((AbstractButton) c).setForeground(colorTexto);
+
+                // Pintar texto
+                super.paint(g, c);
+            }
+        });
+    }
+
+	/**
+     * Aclara un color sumando un porcentaje hacia blanco.
+     *
+     * @param c      Color original.
+     * @param factor Factor de aclarado (0.0f a 1.0f). Ej: 0.15f aclara un 15%.
+     * @return Nuevo color aclarado.
+     * 
+     * -ChatGPT
+     */
+	private static Color Faclarar(Color c, float factor) {
+        int r = (int) (c.getRed() + (255 - c.getRed()) * factor);
+        int g = (int) (c.getGreen() + (255 - c.getGreen()) * factor);
+        int b = (int) (c.getBlue() + (255 - c.getBlue()) * factor);
+        return new Color(Fclamp(r), Fclamp(g), Fclamp(b), c.getAlpha());
+    }
+	
+	
+
+    /**
+     * Oscurece un color multiplicando sus componentes por (1 - factor).
+     *
+     * @param c      Color original.
+     * @param factor Factor de oscurecimiento (0.0f a 1.0f). Ej: 0.2f oscurece un 20%.
+     * @return Nuevo color oscurecido.
+     * 
+     * -ChatGPT
+     */
+	private static Color Foscurecer(Color c, float factor) {
+        int r = (int) (c.getRed() * (1 - factor));
+        int g = (int) (c.getGreen() * (1 - factor));
+        int b = (int) (c.getBlue() * (1 - factor));
+        return new Color(Fclamp(r), Fclamp(g), Fclamp(b), c.getAlpha());
+    }
+	
+	
+	
+	private static Color FajustarContraste(Color c) {
+        double lum = 0.2126 * c.getRed() + 0.7152 * c.getGreen() + 0.0722 * c.getBlue();
+        return lum < 140 ? Color.WHITE : Color.BLACK;
+    }
+
+    /**
+     * Limita un valor entre 0 y 255 para evitar desbordes en componentes RGB.
+     *
+     * @param v Valor a limitar.
+     * @return Valor ajustado entre 0 y 255.
+     * 
+     * -ChatGPT
+     */
+    private static int Fclamp(int v) {
+        return Math.max(0, Math.min(255, v));
+    }
 
 }
