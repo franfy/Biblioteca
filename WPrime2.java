@@ -945,6 +945,7 @@ public class WPrime2 extends JFrame{
 				FcambiarColorTexto(label2, Temas[colorIndex].getLetras());
 				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndex].getLetras());
 				FhacerRedondeado(Aplicar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+				FHacerRedondeado(Revertir, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 				
 				//Aplica el cambio de los temas a todo lo demas
 				FhacerRedondeado(btnRegistrarLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
