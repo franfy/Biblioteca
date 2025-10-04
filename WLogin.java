@@ -24,26 +24,25 @@ public class WLogin extends JFrame {
 		
 		
 		//arrays & variables
-		String[] turnos = {"Mañana", "Tarde", "Nocturno"};
-		var contra = "123";
+		var contra = "franco";
 		
 		
 		//imports
 		JPanel panelv1 = new JPanel();
 		JPanel panelh1 = new JPanel();
-		JLabel fondo = new JLabel(new ImageIcon("/home/franco/Pictures/wallpaper/1373092.png"));
+		
+		JLabel fondo = new JLabel(new ImageIcon("/home/franco/eclipse-workspace/BibliotecaPanDeAzucar/src/Imagenes/Windows-7-Logon-windows-7-26859769-1920-1200.jpg"));
 		JLabel error = new JLabel();
+		JLabel label1 = new JLabel("Ingresa la contraseña");
+		
 		JPasswordField pass = new JPasswordField(2);
-		JComboBox turnosBox = new JComboBox(turnos);
+		
 		JSeparator separadorv1 = new JSeparator(JSeparator.VERTICAL);
 		JSeparator separadorh1 = new JSeparator(JSeparator.HORIZONTAL);
 		
 		
 		//setters
 		fondo.setLayout(new GridBagLayout());
-		
-		turnosBox.setToolTipText("Elige el turno al que perteneces");
-		turnosBox.setBackground(Color.LIGHT_GRAY);
 		
 		pass.setToolTipText("Ingresa la contraseña, luego presiona la tecla Enter para iniciar sesion");
 		pass.setBackground(Color.LIGHT_GRAY);
@@ -65,7 +64,7 @@ public class WLogin extends JFrame {
 		
 		
 		//adds
-		panelh1.add(turnosBox);
+		panelh1.add(label1);
 		panelh1.add(separadorh1);
 		
 		panelv1.add(panelh1);

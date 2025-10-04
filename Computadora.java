@@ -2,29 +2,31 @@ package Biblioteca;
 
 public class Computadora {
 
-	int nroSerie;
-	String modelo;
+	int nro;
+	String estado;
 
-	public Computadora(int nroSerie, String modelo) {
+	public Computadora(int nro, String estado) {
 		super();
-		this.nroSerie = nroSerie;
-		this.modelo = modelo;
+		this.nro = nro;
+		this.estado = estado;
 	}
 
-	public int getNroSerie() {
-		return nroSerie;
+	public int getNro() {
+		return nro;
 	}
 
-	public void setNroSerie(int nroSerie) {
-		this.nroSerie = nroSerie;
+	public void setNro(int nro) {
+		this.nro = nro;
 	}
 
-	public String getModelo() {
-		return modelo;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
+	
+	
 	
 }

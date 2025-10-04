@@ -2,25 +2,27 @@ package Biblioteca;
 
 public class Libro {
 
-	long ISBN;
+	int ISBN;
 	String titulo;
 	String autor;
 	String genero;
 	String materia;
+	String pais;
 	
-	public Libro(long iSBN, String titulo, String autor, String genero, String materia) {
+	public Libro(int ISBN, String titulo, String autor, String genero, String materia, String pais) {
 		super();
-		ISBN = iSBN;
+		this.ISBN = ISBN;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.genero = genero;
 		this.materia = materia;
+		this.pais = pais;
 	}
-	
-	public long getISBN() {
+
+	public int getISBN() {
 		return ISBN;
 	}
-	public void setISBN(long iSBN) {
+	public void setISBN(int iSBN) {
 		ISBN = iSBN;
 	}
 	public String getTitulo() {
@@ -47,6 +49,13 @@ public class Libro {
 	public void setMateria(String materia) {
 		this.materia = materia;
 	}
+	public String getPais() {
+		return pais;
+	}
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+	
 	
 	
 }
