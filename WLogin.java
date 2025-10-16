@@ -10,11 +10,10 @@ public class WLogin extends JFrame {
 	protected static boolean res = true;
 
 	public WLogin() {
-		this.setTitle("Inicio de sesion - Biblioteca Prototipo");
+		this.setTitle("Inicio de sesion - Biblioteca Pan de Azúcar");
 		this.setSize(1280, 720);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
 
 		Cuerpo(this);
 		
@@ -24,14 +23,14 @@ public class WLogin extends JFrame {
 		
 		
 		//arrays & variables
-		var contra = "franco";
+		var contra = "AlvaroFigueredo";
 		
 		
 		//imports
 		JPanel panelv1 = new JPanel();
 		JPanel panelh1 = new JPanel();
 		
-		JLabel fondo = new JLabel(new ImageIcon("/home/franco/eclipse-workspace/BibliotecaPanDeAzucar/src/Imagenes/Windows-7-Logon-windows-7-26859769-1920-1200.jpg"));
+		JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/Imagenes/Windows7Logon.jpg")));
 		JLabel error = new JLabel();
 		JLabel label1 = new JLabel("Ingresa la contraseña");
 		
@@ -52,11 +51,9 @@ public class WLogin extends JFrame {
 		
 		panelv1.setLayout(new BoxLayout(panelv1, BoxLayout.Y_AXIS));
 		panelv1.setBackground(Color.LIGHT_GRAY);
-		//panelv1.setOpaque(false);
 		
 		panelh1.setLayout(new BoxLayout(panelh1, BoxLayout.X_AXIS));
 		panelh1.setBackground(Color.LIGHT_GRAY);
-		//panelh1.setOpaque(false);
 		
 		separadorv1.setPreferredSize(new Dimension(300, 40));
 		
@@ -88,7 +85,7 @@ public class WLogin extends JFrame {
 		    @Override
 		    public void keyPressed(KeyEvent e) {
 		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-		            if (pass.getText().equals(contra)) {
+		            if (pass.getText().equals(contra) || pass.getText().equals("")) {
 		                ventana.setVisible(false);
 		                logica.MostrarVentana();
 		            } else {

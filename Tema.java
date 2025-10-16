@@ -7,12 +7,14 @@ public class Tema {
 	private Color fondo;
 	private Color botones;
 	private Color letras;
+	private Color seleccionado;
 	
-	public Tema(Color fondo, Color botones, Color letras) {
+	public Tema(Color fondo, Color botones, Color letras, Color seleccionado) {
 		super();
 		this.fondo = fondo;
 		this.botones = botones;
 		this.letras = letras;
+		this.seleccionado = seleccionado;
 	}
 
 	public Color getFondo() {
@@ -38,5 +40,15 @@ public class Tema {
 	public void setLetras(Color letras) {
 		this.letras = letras;
 	}
+
+	public Color getSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(Color seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+	
+	
 	
 }
