@@ -8,16 +8,20 @@ import javax.swing.table.*;
 
 public class DBPersistencia {
 
-	private final String DB_URL = "jdbc:mysql://23.111.185.242/program1_equipo4?useSSL=false";
+	private final String DB_URL = "jdbc:mysql://170.249.219.114/program1_equipo4?useSSL=false";
 	private final String DB_USER = "program1_estudiantes";
 	private final String DB_PASS = "estudiantesarrayanes";
-	
+
+	//private final String DB_URL = "jdbc:mysql://localhost/BibliotecaPanDeAzucar?useSSL=false";
+	//private final String DB_USER = "root";
+	//private final String DB_PASS = "";
+
 	private Connection getConnection() throws SQLException{
 		return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 	}
 	
 	
-	public Boolean subirLibro(int isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion) {
+	public Boolean subirLibro(String isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion) {
 		
 		var res = false;
 		
@@ -191,7 +195,7 @@ public class DBPersistencia {
 	
 	
 	
-	public Boolean BajaLibro(int isbn) {
+	public Boolean BajaLibro(String isbn) {
 		var res = false;
 		
 		String sentencia = "DELETE FROM Libros WHERE isbn = " + isbn;
@@ -219,10 +223,11 @@ public class DBPersistencia {
 	
 	
 	
-	public Boolean BajaComputadora() {
+	public Boolean BajaComputadora(int numero) {
+		
 		var res = false;
 		
-		String sentencia = "";
+		String sentencia = "DELETE FROM Computadoras WHERE numero = " + numero;
 		System.out.println(sentencia);
 		try {
 			
@@ -247,6 +252,96 @@ public class DBPersistencia {
 	
 	
 	
+	public Boolean BajaImpresion(int id) {
+		
+		var res = false;
+		
+		String sentencia = "DELETE FROM Impresiones WHERE id = " + id;
+		System.out.println(sentencia);
+		try {
+			
+			Connection conexion = getConnection();
+			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
+			declaracionSQL.executeUpdate();
+			
+			res = true;
+			System.out.println(res);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+			res = false;
+			
+		} finally {
+			System.out.println("Se hizo o intento listar las impresiones");
+			
+		}
+		
+		return res;
+		
+	}
+	
+	
+	
+	public Boolean BajaPrestamoLibro(int id) {
+		
+		var res = false;
+		
+		String sentencia = "DELETE FROM PrestamoLibro WHERE id = " + id;
+		System.out.println(sentencia);
+		try {
+			
+			Connection conexion = getConnection();
+			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
+			declaracionSQL.executeUpdate();
+			
+			res = true;
+			System.out.println(res);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+			res = false;
+			
+		} finally {
+			System.out.println("Se hizo o intento listar los prestamos de libros");
+			
+		}
+		
+		return res;
+		
+	}
+	
+	
+	
+	public Boolean BajaPrestamoComputadora(int id) {
+		
+		var res = false;
+		
+		String sentencia = "DELETE FROM PrestamoComputadora WHERE id = " + id;
+		System.out.println(sentencia);
+		try {
+			
+			Connection conexion = getConnection();
+			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
+			declaracionSQL.executeUpdate();
+			
+			res = true;
+			System.out.println(res);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+			res = false;
+			
+		} finally {
+			System.out.println("Se hizo o intento listar los prestamos de libros");
+			
+		}
+		
+		return res;
+		
+	}
+	
+	
+	
 	public Boolean ListarLibro(DefaultTableModel modelo, ArrayList array) {
 		
 		var res = false;
@@ -260,7 +355,7 @@ public class DBPersistencia {
 			ResultSet rs = declaracionSQL.executeQuery();
 			
 			while(rs.next()) {
-				var neoISBN = rs.getInt(1);
+				var neoISBN = rs.getString(1);
 				var neoTitulo = rs.getString(2);
 				var neoAutor = rs.getString(3);
 				var neoGenero = rs.getString(4);
@@ -331,7 +426,7 @@ public class DBPersistencia {
 		
 		var res = false;
 		
-		String sentencia = "SELECT cantidad, precio FROM Impresiones";
+		String sentencia = "SELECT id, cantidad, precio FROM Impresiones";
 		System.out.println(sentencia);
 		try {
 			
@@ -340,10 +435,11 @@ public class DBPersistencia {
 			ResultSet rs = declaracionSQL.executeQuery();
 			
 			while(rs.next()) {
-				var neoCantidad = rs.getInt(1);
-				var neoPrecio = rs.getString(2);
+				var neoID = rs.getString(1);
+				var neoCantidad = rs.getInt(2);
+				var neoPrecio = rs.getInt(3);
 				
-				Object[] fila = {neoCantidad, neoPrecio};
+				Object[] fila = {neoID, neoCantidad, neoPrecio};
 				modelo.addRow(fila);
 			}
 			

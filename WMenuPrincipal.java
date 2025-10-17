@@ -42,9 +42,9 @@ public class WMenuPrincipal extends JFrame{
 	
 	//Objetos para la personalizacion del programa
 	protected static Tema[] Temas = { /* Fondo, Botones, Letras*/
-		    new Tema(Color.WHITE, new Color(180,180,180), Color.BLACK, Color.DARK_GRAY),// Claro
-		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,244,244), Color.BLACK),// Oscuro
-		    new Tema(new Color(15,138,76),new Color(10, 100, 10), Color.BLACK, Color.GREEN)// Verde Aqua
+		    new Tema(Color.WHITE, new Color(180,180,180), Color.BLACK, new Color(130,130,130)),// Claro
+		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,244,244), new Color(120,120,120)),// Oscuro
+		    new Tema(new Color(15,138,76),new Color(10, 100, 10), Color.BLACK, new Color(30,130,0))// Verde Aqua
 		};
 	protected static String[] coloresNombres = {"Claro", "Oscuro", "Verde Aqua"};
 	protected static int colorIndex;
@@ -370,7 +370,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var res = logica.SubirLibro(Integer.parseInt(InputISBN.getText()),
+				var res = logica.SubirLibro(InputISBN.getText(),
 						InputTitulo.getText(), 
 						InputAutor.getText(), 
 						InputGenero.getText(), 
@@ -599,6 +599,11 @@ public class WMenuPrincipal extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				var res = logica.SubirPrestamoLibro(InputISBN.getText(), InputEstudiante.getText(), InputGrupo.getText(), InputDevolucion.getText());
+				if (res == true) {
+					LabelResultado.setText("Todo salio bien!");
+				} else {
+					LabelResultado.setText("Todo salio mal!");
+				}
 			}
 		});
 		
@@ -685,6 +690,11 @@ public class WMenuPrincipal extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				var res = logica.SubirPrestamoComputadora(Integer.parseInt(InputNro.getText()), InputEstudiante.getText(), InputGrupo.getText(), InputDevolucion.getText());
+				if (res == true) {
+					LabelResultado.setText("Todo salio bien!");
+				} else {
+					LabelResultado.setText("Todo salio mal!");
+				}
 			}
 		});
 		
@@ -710,7 +720,8 @@ public class WMenuPrincipal extends JFrame{
 		
 		//Imports
 		JPanel panelHorizontalBaja = new JPanel();
-		JButton botonBaja = new JButton("Modificar fila seleccionada");
+		JButton botonBaja = new JButton("Dar de baja Libro");
+		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla);
@@ -721,6 +732,7 @@ public class WMenuPrincipal extends JFrame{
 		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 		tabla.getTableHeader().setReorderingAllowed(false);
 		panelHorizontalBaja.setOpaque(false);
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
 		
 		
 		//Adds
@@ -738,26 +750,19 @@ public class WMenuPrincipal extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				
 				int sele = tabla.getSelectedRow();
-				System.out.println("Seleccionado> "+ sele);
+				Object valorObj = tabla.getValueAt(sele, 0);
+				String valor = String.valueOf(valorObj);
+				logica.BajaLibro(valor);
+				logica.ListarLibro(modelo, libros);
 				
-				if (sele != -1) {
-					//{
-					int valor = (int) tabla.getValueAt(sele, 0);
-					System.out.println("valor> " + valor);
-					//String isbn = valor.toString();
-					//var neoisbn = Integer.parseInt(isbn);
-					//System.out.println(isbn + " " + neoisbn);
-					logica.BajaLibro(valor);
-					//} Solucion sacada por chatGPT, el error era ocasionado por querer transformar un int a String 
-				}
 			}
 		});
         
         
         //Se visualiza en la ventana
         PanelPadre.add(PanelTabla, BorderLayout.CENTER);
-        PanelPadre.add(panelHorizontalBaja, BorderLayout.SOUTH);
         PanelTabla.removeAll();
+        PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
         PanelTabla.add(scroll);
         FestablecePaneles(false, true);
       	PanelPadre.revalidate();
@@ -776,29 +781,58 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//Imports
+		JPanel panelHorizontalBaja = new JPanel();
+		JButton botonBaja = new JButton("Dar de baja Computadora");
+		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla);
 		
 		
 		//setters
+		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
+		panelHorizontalBaja.setOpaque(false);
+		
+		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
 		
 		//adds
+		panelHorizontalBaja.add(botonBaja);
 		
 		
 		//Llamado
 		logica.ListarComputadora(modelo, computadora);
 		
 
+		//eventos
+		botonBaja.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int sele = tabla.getSelectedRow();
+				Object valorObj = tabla.getValueAt(sele, 0);
+				String valor = String.valueOf(valorObj);
+				int neoNro = Integer.parseInt(valor);
+				System.out.println(neoNro);
+				logica.BajaComputadora(neoNro);
+				logica.ListarComputadora(modelo, computadora);
+				
+			}
+		});
+		
+		
 		//Se visualiza en la ventana
-		PanelPadre.add(PanelTabla);
-		PanelTabla.removeAll();
-		PanelTabla.add(scroll);
-		FestablecePaneles(false, true);
-		PanelPadre.revalidate();
-		PanelPadre.repaint();
+		PanelPadre.add(PanelTabla, BorderLayout.CENTER);
+        PanelTabla.removeAll();
+        PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
+        PanelTabla.add(scroll);
+        FestablecePaneles(false, true);
+      	PanelPadre.revalidate();
+      	PanelPadre.repaint();
 	}
 	
 	
@@ -807,34 +841,64 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//variables & arrays
-		String[] columnas = {"Cantidad de hojas", "Precio"};
-		ArrayList computadora = new ArrayList();
+		String[] columnas = {"Numero de impresion", "Cantidad de hojas", "Precio", "Fecha de impresion"};
+		ArrayList array = new ArrayList();
 		
 		
 		//Imports
+		JPanel panelHorizontalBaja = new JPanel();
+		JButton botonBaja = new JButton("Dar de baja Impresiones");
+		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla);
 		
 		
 		//setters
+		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
+		panelHorizontalBaja.setOpaque(false);
+		
+		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
 		
 		//adds
+		panelHorizontalBaja.add(botonBaja);
 		
 		
 		//Llamado
-		logica.ListarImpresion(modelo, computadora);
+		logica.ListarImpresion(modelo, array);
 		
 
+		//eventos
+		botonBaja.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int sele = tabla.getSelectedRow();
+				System.out.println(sele);
+				Object valorObj = tabla.getValueAt(sele, 0);
+				String valor = String.valueOf(valorObj);
+				int neoID = Integer.parseInt(valor);
+				System.out.println(neoID);
+				logica.BajaImpresion(neoID);
+				logica.ListarImpresion(modelo, array);
+				
+			}
+		});
+		
+		
 		//Se visualiza en la ventana
-		PanelPadre.add(PanelTabla);
-		PanelTabla.removeAll();
-		PanelTabla.add(scroll);
-		FestablecePaneles(false, true);
-		PanelPadre.revalidate();
-		PanelPadre.repaint();
+		PanelPadre.add(PanelTabla, BorderLayout.CENTER);
+        PanelTabla.removeAll();
+        PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
+        PanelTabla.add(scroll);
+        FestablecePaneles(false, true);
+      	PanelPadre.revalidate();
+      	PanelPadre.repaint();
 	}
 	
 	
@@ -848,29 +912,59 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//Imports
+		JPanel panelHorizontalBaja = new JPanel();
+		JButton botonBaja = new JButton("Dar de baja Impresiones");
+		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla);
 		
 		
 		//setters
+		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
+		panelHorizontalBaja.setOpaque(false);
+		
+		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
 		
 		//adds
+		panelHorizontalBaja.add(botonBaja);
 		
 		
 		//Llamadas
 		logica.ListarPrestamoLibro(modelo, libros);
 		
 		
+		//eventos
+		botonBaja.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int sele = tabla.getSelectedRow();
+				System.out.println(sele);
+				Object valorObj = tabla.getValueAt(sele, 0);
+				String valor = String.valueOf(valorObj);
+				int neoID = Integer.parseInt(valor);
+				System.out.println(neoID);
+				logica.BajaPrestamoLibro(neoID);
+				logica.ListarPrestamoLibro(modelo, libros);
+				
+			}
+		});
+		
+		
 		//Se visualiza en la ventana
-		PanelPadre.add(PanelTabla);
-		PanelTabla.removeAll();
+		PanelPadre.add(PanelTabla, BorderLayout.CENTER);
+        PanelTabla.removeAll();
+		PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
 		PanelTabla.add(scroll);
 		FestablecePaneles(false, true);
 		PanelPadre.revalidate();
-		PanelPadre.repaint();        
+		PanelPadre.repaint();
 	}
 	
 	
@@ -882,25 +976,55 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//Imports
+		JPanel panelHorizontalBaja = new JPanel();
+		JButton botonBaja = new JButton("Dar de baja Impresiones");
+		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla);
 		
 		
 		//setters
+		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
+		panelHorizontalBaja.setOpaque(false);
+		
+		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
 		
 		//adds
+		panelHorizontalBaja.add(botonBaja);
 		
 		
 		//Llamadas
 		logica.ListarPrestamoComputadora(modelo, computadora);
 		
 		
+		//eventos
+		botonBaja.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			int sele = tabla.getSelectedRow();
+			System.out.println(sele);
+			Object valorObj = tabla.getValueAt(sele, 0);
+			String valor = String.valueOf(valorObj);
+			int neoID = Integer.parseInt(valor);
+			System.out.println(neoID);
+			logica.BajaPrestamoComputadora(neoID);
+			logica.ListarPrestamoComputadora(modelo, computadora);
+			
+		}
+	});
+		
+		
 		//Se visualiza en la ventana
-		PanelPadre.add(PanelTabla);
-		PanelTabla.removeAll();
+		PanelPadre.add(PanelTabla, BorderLayout.CENTER);
+        PanelTabla.removeAll();
+		PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
 		PanelTabla.add(scroll);
 		FestablecePaneles(false, true);
 		PanelPadre.revalidate();

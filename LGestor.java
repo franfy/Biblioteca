@@ -3,6 +3,7 @@ package Biblioteca;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
+import java.beans.BeanDescriptor;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -48,11 +49,11 @@ public class LGestor {
 	 * 
 	 * 
 	 */
-	public Boolean SubirLibro(int isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion) {
+	public Boolean SubirLibro(String isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion) {
 		
 		Boolean res;
 		
-		if (isbn <= 0 || titulo.equals(null) || autor.equals(null) || genero.equals(null) || materia.equals(null) || cantidad <= 0 || pais.equals(null)) {
+		if (isbn.equals(null) || titulo.equals(null) || autor.equals(null) || genero.equals(null) || materia.equals(null) || cantidad <= 0 || pais.equals(null)) {
 			res = false;
 		} else {
 			res = DB.subirLibro(isbn, titulo, autor, genero, materia, cantidad, pais, observacion);
@@ -122,19 +123,44 @@ public class LGestor {
 	
 	}
 	
-	public Boolean BajaLibro(int isbn) {
+	public Boolean BajaLibro(String isbn) {
 		
-		DB.BajaLibro(isbn);
+		Boolean res = DB.BajaLibro(isbn);
 		
-		return true;
+		return res;
 		
 	}
 	
-	public Boolean BajaComputadora() {
+	public Boolean BajaComputadora(int numero) {
 		
-		var res = false;
+		Boolean res = DB.BajaComputadora(numero);
 		
 		return res;
+		
+	}
+	
+	public Boolean BajaImpresion(int id) {
+		
+		Boolean res = DB.BajaImpresion(id);
+		
+		return res;
+		
+	}
+	
+	public Boolean BajaPrestamoLibro(int id) {
+		
+		Boolean res = DB.BajaPrestamoLibro(id);
+		
+		return res;
+		
+	}
+	
+	public Boolean BajaPrestamoComputadora(int id) {
+		
+		Boolean res = DB.BajaPrestamoComputadora(id);
+		
+		return res;
+		
 	}
 	
 	public Boolean ListarLibro(DefaultTableModel modelo,ArrayList array) {
