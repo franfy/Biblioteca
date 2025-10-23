@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
+
 import javax.swing.plaf.basic.BasicButtonUI;
 
 public class WMenuPrincipal extends JFrame{
@@ -281,6 +282,7 @@ public class WMenuPrincipal extends JFrame{
 		JPanel panelHorizontalMateria = new JPanel();
 		JPanel panelHorizontalCantidad = new JPanel();
 		JPanel panelHorizontalPais = new JPanel();
+		JPanel panelHorizontalObservacion = new JPanel();
 		
 		JLabel LabelISBN = new JLabel("ISBN");
 		JLabel LabelTitulo = new JLabel("Titulo");
@@ -289,6 +291,7 @@ public class WMenuPrincipal extends JFrame{
 		JLabel LabelMateria = new JLabel("Materia");
 		JLabel LabelPais = new JLabel("Pais");
 		JLabel LabelCantidad = new JLabel("Cantidad");
+		JLabel LabelObservacion = new JLabel("Observacion");
 		JLabel LabelResultado = new JLabel();
 		
 		JTextField InputISBN = new JTextField(6);
@@ -298,6 +301,7 @@ public class WMenuPrincipal extends JFrame{
 		JTextField InputMateria = new JTextField(6);
 		JTextField InputCantidad = new JTextField(6);
 		JTextField InputPais = new JTextField(6);
+		JTextField InputObservacion = new JTextField(6);
 		
 		JButton Registrar = new JButton("Registrar Libro");
 		
@@ -311,6 +315,7 @@ public class WMenuPrincipal extends JFrame{
 		panelHorizontalMateria.setLayout(new BoxLayout(panelHorizontalMateria, BoxLayout.X_AXIS));
 		panelHorizontalCantidad.setLayout(new BoxLayout(panelHorizontalCantidad, BoxLayout.X_AXIS));
 		panelHorizontalPais.setLayout(new BoxLayout(panelHorizontalPais, BoxLayout.X_AXIS));
+		panelHorizontalObservacion.setLayout(new BoxLayout(panelHorizontalObservacion, BoxLayout.X_AXIS));
 		
 		LabelISBN.setForeground(Temas[colorIndex].getLetras());
 		LabelTitulo.setForeground(Temas[colorIndex].getLetras());
@@ -319,6 +324,7 @@ public class WMenuPrincipal extends JFrame{
 		LabelMateria.setForeground(Temas[colorIndex].getLetras());
 		LabelCantidad.setForeground(Temas[colorIndex].getLetras());
 		LabelPais.setForeground(Temas[colorIndex].getLetras());
+		LabelObservacion.setForeground(Temas[colorIndex].getLetras());
 		LabelResultado.setForeground(Temas[colorIndex].getLetras());
 		
 		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
@@ -353,6 +359,10 @@ public class WMenuPrincipal extends JFrame{
 		panelHorizontalPais.add(InputPais);
 		panelHorizontalPais.setOpaque(false);
 		
+		panelHorizontalObservacion.add(LabelObservacion);
+		panelHorizontalObservacion.add(InputObservacion);
+		panelHorizontalObservacion.setOpaque(false);
+		
 		panelVertical1.add(panelHorizontalISBN);
 		panelVertical1.add(panelHorizontalTitulo);
 		panelVertical1.add(panelHorizontalAutor);
@@ -360,6 +370,7 @@ public class WMenuPrincipal extends JFrame{
 		panelVertical1.add(panelHorizontalMateria);
 		panelVertical1.add(panelHorizontalCantidad);
 		panelVertical1.add(panelHorizontalPais);
+		panelVertical1.add(panelHorizontalObservacion);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
 		panelVertical1.setOpaque(false);
@@ -371,18 +382,17 @@ public class WMenuPrincipal extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				var res = logica.SubirLibro(InputISBN.getText(),
-						InputTitulo.getText(), 
-						InputAutor.getText(), 
-						InputGenero.getText(), 
-						InputMateria.getText(), 
-						Integer.parseInt(InputCantidad.getText()),
-						InputPais.getText(),
-						"¡No hay observaciones!");
+					InputTitulo.getText(), 
+					InputAutor.getText(), 
+					InputGenero.getText(), 
+					InputMateria.getText(), 
+					Integer.parseInt(InputCantidad.getText()),
+					InputPais.getText(),
+					InputObservacion.getText());
+					LabelResultado.setText("Algo salio mal");
 				
 				if (res == true) {
 					LabelResultado.setText("Todo salio bien");
-				} else {
-					LabelResultado.setText("Todo salio mal");
 				}
 			}
 		});
@@ -405,11 +415,14 @@ public class WMenuPrincipal extends JFrame{
 		//imports
 		JPanel panelVertical1 = new JPanel();
 		JPanel panelHorizontalNro = new JPanel();
+		JPanel panelHorizontalObservacion = new JPanel();
 		
 		JLabel LabelNro = new JLabel("Numero de computadora");
+		JLabel LabelObservacion = new JLabel("Observacion");
 		JLabel LabelResultado = new JLabel();
 		
 		JTextField InputNro = new JTextField(6);
+		JTextField InputObservacion = new JTextField(6);
 		
 		JButton Registrar = new JButton("Registrar Computadora");
 		
@@ -417,8 +430,10 @@ public class WMenuPrincipal extends JFrame{
 		//setters
 		panelVertical1.setLayout(new BoxLayout(panelVertical1, BoxLayout.Y_AXIS));
 		panelHorizontalNro.setLayout(new BoxLayout(panelHorizontalNro, BoxLayout.X_AXIS));
+		panelHorizontalObservacion.setLayout(new BoxLayout(panelHorizontalObservacion, BoxLayout.X_AXIS));
 		
 		LabelNro.setForeground(Temas[colorIndex].getLetras());
+		LabelObservacion.setForeground(Temas[colorIndex].getLetras());
 		LabelResultado.setForeground(Temas[colorIndex].getLetras());
 		
 		FhacerRedondeado(Registrar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
@@ -427,7 +442,12 @@ public class WMenuPrincipal extends JFrame{
 		panelHorizontalNro.add(InputNro);
 		panelHorizontalNro.setOpaque(false);
 		
+		panelHorizontalObservacion.add(LabelObservacion);
+		panelHorizontalObservacion.add(InputObservacion);
+		panelHorizontalObservacion.setOpaque(false);
+		
 		panelVertical1.add(panelHorizontalNro);
+		panelVertical1.add(panelHorizontalObservacion);
 		panelVertical1.add(Registrar);
 		panelVertical1.add(LabelResultado);
 		panelVertical1.setOpaque(false);
@@ -438,8 +458,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var res = logica.SubirComputadora(Integer.parseInt(InputNro.getText()), "¡No hay observaciones!");
-				
+				var res = logica.SubirComputadora(Integer.parseInt(InputNro.getText()), InputObservacion.getText());
 				if (res == true) {
 					LabelResultado.setText("Todo salio bien");
 				} else {
@@ -468,8 +487,8 @@ public class WMenuPrincipal extends JFrame{
 		JPanel panelHorizontalMonto = new JPanel();
 		JPanel panelHorizontalCantidadImpresiones = new JPanel();
 		
-		JLabel LabelMonto = new JLabel("Monto de la impresion:");
-		JLabel LabelCantidadImpresiones = new JLabel("Cantidad de impresiones:");
+		JLabel LabelMonto = new JLabel("Monto de la impresion");
+		JLabel LabelCantidadImpresiones = new JLabel("Cantidad de impresiones");
 		JLabel LabelResultado = new JLabel();
 		
 		JTextField InputMonto = new JTextField(6);
@@ -538,7 +557,6 @@ public class WMenuPrincipal extends JFrame{
 		JPanel panelHorizontalEstudiante = new JPanel();
 		JPanel panelHorizontalGrupo = new JPanel();
 		JPanel panelHorizontalDevolucion = new JPanel();
-		
 		JLabel LabelResultado = new JLabel();
 		JLabel LabelISBN = new JLabel("Ingrese el ISBN del libro");
 		JLabel LabelEstudiante = new JLabel("Nombre del Estudiante");
@@ -753,7 +771,7 @@ public class WMenuPrincipal extends JFrame{
 				Object valorObj = tabla.getValueAt(sele, 0);
 				String valor = String.valueOf(valorObj);
 				logica.BajaLibro(valor);
-				logica.ListarLibro(modelo, libros);
+				FListarLibro();
 				
 			}
 		});
@@ -817,9 +835,8 @@ public class WMenuPrincipal extends JFrame{
 				Object valorObj = tabla.getValueAt(sele, 0);
 				String valor = String.valueOf(valorObj);
 				int neoNro = Integer.parseInt(valor);
-				System.out.println(neoNro);
 				logica.BajaComputadora(neoNro);
-				logica.ListarComputadora(modelo, computadora);
+				FListarComputadora();
 				
 			}
 		});
@@ -841,13 +858,17 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//variables & arrays
-		String[] columnas = {"Numero de impresion", "Cantidad de hojas", "Precio", "Fecha de impresion"};
+		String[] columnas = {"Impresion numero", "Precio", "Cantidad de hojas", "Fecha de impresion"};
 		ArrayList array = new ArrayList();
 		
 		
 		//Imports
-		JPanel panelHorizontalBaja = new JPanel();
+		JPanel panelHorizontalInferior = new JPanel();
+		
 		JButton botonBaja = new JButton("Dar de baja Impresiones");
+		JButton botonSumaMonto = new JButton("Sumar todos los montos presentes");
+		
+		JLabel LabelSumaMonto = new JLabel();
 		
 		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 		JTable tabla = new JTable(modelo);
@@ -855,17 +876,22 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//setters
-		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
-		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
-		panelHorizontalBaja.setOpaque(false);
+		panelHorizontalInferior.setLayout(new BoxLayout(panelHorizontalInferior, BoxLayout.X_AXIS));
+		FcambiarColorFondo(panelHorizontalInferior, Temas[colorIndex].getFondo());
+		panelHorizontalInferior.setOpaque(false);
 		
 		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		FhacerRedondeado(botonSumaMonto, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
+		LabelSumaMonto.setForeground(Temas[colorIndex].getLetras());
+		
 		
 		//adds
-		panelHorizontalBaja.add(botonBaja);
+		panelHorizontalInferior.add(botonBaja);
+		panelHorizontalInferior.add(botonSumaMonto);
+		panelHorizontalInferior.add(LabelSumaMonto);
 		
 		
 		//Llamado
@@ -885,8 +911,19 @@ public class WMenuPrincipal extends JFrame{
 				int neoID = Integer.parseInt(valor);
 				System.out.println(neoID);
 				logica.BajaImpresion(neoID);
-				logica.ListarImpresion(modelo, array);
+				FListarImpresion();
 				
+			}
+		});
+		
+		
+		botonSumaMonto.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(logica.SumaMontoImpresion(tabla, tabla.getRowCount()));
+				logica.SumaMontoImpresion(tabla, tabla.getRowCount());
+				LabelSumaMonto.setText("Hola mundo");
 			}
 		});
 		
@@ -894,7 +931,7 @@ public class WMenuPrincipal extends JFrame{
 		//Se visualiza en la ventana
 		PanelPadre.add(PanelTabla, BorderLayout.CENTER);
         PanelTabla.removeAll();
-        PanelTabla.add(panelHorizontalBaja, BorderLayout.SOUTH);
+        PanelTabla.add(panelHorizontalInferior, BorderLayout.SOUTH);
         PanelTabla.add(scroll);
         FestablecePaneles(false, true);
       	PanelPadre.revalidate();
@@ -907,7 +944,7 @@ public class WMenuPrincipal extends JFrame{
 		
 		
 		//variables & arrays
-		String[] columnas = {"Numero de prestamo", "ISBN", "Observaciones", "Estudiante", "Grupo", "Entrega", "Devolucion"};
+		String[] columnas = {"Prestamo numero", "ISBN", "Observaciones", "Estudiante", "Grupo", "Entrega", "Devolucion"};
 		ArrayList libros = new ArrayList();
 		
 		
@@ -951,7 +988,7 @@ public class WMenuPrincipal extends JFrame{
 				int neoID = Integer.parseInt(valor);
 				System.out.println(neoID);
 				logica.BajaPrestamoLibro(neoID);
-				logica.ListarPrestamoLibro(modelo, libros);
+				FListarPrestamoLibro();
 				
 			}
 		});
@@ -971,7 +1008,7 @@ public class WMenuPrincipal extends JFrame{
 	
 	public static void FListarPrestamoComputadora() {
 		//variables & arrays
-		String[] columnas = {"Numero de prestamo", "Numero de computadora", "Observaciones", "Estudiante", "Grupo","Entrega", "Devolucion"};
+		String[] columnas = {"Prestamo numero", "Numero de computadora", "Observaciones", "Estudiante", "Grupo","Entrega", "Devolucion"};
 		ArrayList computadora = new ArrayList();
 		
 		
@@ -1015,7 +1052,7 @@ public class WMenuPrincipal extends JFrame{
 			int neoID = Integer.parseInt(valor);
 			System.out.println(neoID);
 			logica.BajaPrestamoComputadora(neoID);
-			logica.ListarPrestamoComputadora(modelo, computadora);
+			FListarComputadora();
 			
 		}
 	});

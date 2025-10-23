@@ -99,7 +99,6 @@ public class WLogin extends JFrame {
 			
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				System.out.println("sale");
                 pass.setEchoChar((char) 0); // Sin ocultar
                 pass.setText("Contraseña");
                 pass.setForeground(Color.GRAY);
@@ -108,7 +107,6 @@ public class WLogin extends JFrame {
 			
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				System.out.println("entra");
                 pass.setText("");
                 pass.setEchoChar('•'); // Activa el ocultamiento
                 pass.setForeground(Color.BLACK);

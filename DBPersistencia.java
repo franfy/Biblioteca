@@ -8,13 +8,13 @@ import javax.swing.table.*;
 
 public class DBPersistencia {
 
-	private final String DB_URL = "jdbc:mysql://170.249.219.114/program1_equipo4?useSSL=false";
-	private final String DB_USER = "program1_estudiantes";
-	private final String DB_PASS = "estudiantesarrayanes";
+	//private final String DB_URL = "jdbc:mysql://170.249.219.114/program1_equipo4?useSSL=false";
+	//private final String DB_USER = "program1_estudiantes";
+	//private final String DB_PASS = "estudiantesarrayanes";
 
-	//private final String DB_URL = "jdbc:mysql://localhost/BibliotecaPanDeAzucar?useSSL=false";
-	//private final String DB_USER = "root";
-	//private final String DB_PASS = "";
+	private final String DB_URL = "jdbc:mysql://localhost/BibliotecaPanDeAzucar?useSSL=false";
+	private final String DB_USER = "root";
+	private final String DB_PASS = "";
 
 	private Connection getConnection() throws SQLException{
 		return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -80,11 +80,11 @@ public class DBPersistencia {
 	
 	
 	
-	public Boolean subirImpresion(int monto, int cantidad) {
+	public Boolean subirImpresion(int monto, int cantidad, String fecha) {
 		
 		var res = false;
 		
-		String sentencia = "INSERT INTO Impresiones (cantidad, precio) VALUES("+ monto +","+ cantidad +")";
+		String sentencia = "INSERT INTO Impresiones (cantidad, precio, fecha) VALUES("+ monto +","+ cantidad +",'"+ fecha +"')";
 		System.out.println(sentencia);
 		try {
 			
@@ -115,8 +115,9 @@ public class DBPersistencia {
 		String neoIsbn = "";
 		String neoObservacion = "";
 		var res = false;
+		System.out.println(isbn);
 		
-		String sentencia = "SELECT isbn, observacion FROM Libros WHERE " + isbn;
+		String sentencia = "SELECT isbn, observacion FROM Libros WHERE isbn = " + isbn;
 		System.out.println(sentencia);
 		try {
 			
@@ -124,20 +125,23 @@ public class DBPersistencia {
 			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
 			ResultSet rs = declaracionSQL.executeQuery();
 			
-			while(rs.next()) {
+			if(!rs.next()) {
+				System.out.println("no existe");
+			} else {
+				
 				neoIsbn = rs.getString(1);
 				neoObservacion = rs.getString(2);
 				
+				sentencia = "INSERT INTO PrestamoLibro (isbn, observaciones, nombre, grupo, entrega, devolucion ) VALUES('"+neoIsbn+"','"+neoObservacion+"','"+estudiante+"','"+grupo+"','"+entrega+"','"+devolucion+"')";
+				
+				System.out.println(sentencia);
+				
+				PreparedStatement declaracionSQL2 = conexion.prepareStatement(sentencia);
+				declaracionSQL2.executeUpdate();
+
+				res = true;
+				
 			}
-			
-			sentencia = "INSERT INTO PrestamoLibro (isbn, observaciones, nombre, grupo, entrega, devolucion ) VALUES('"+neoIsbn+"','"+neoObservacion+"','"+estudiante+"','"+grupo+"','"+entrega+"','"+devolucion+"')";
-			
-			System.out.println(sentencia);
-			
-			PreparedStatement declaracionSQL2 = conexion.prepareStatement(sentencia);
-			declaracionSQL2.executeUpdate();
-			
-			res = true;
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
@@ -158,28 +162,34 @@ public class DBPersistencia {
 		int neoNumero = 0;
 		String neoObservacion = "";
 		var res = false;
+		System.out.println(numero);
 		
-		String sentencia = "SELECT numero, observaciones FROM Computadoras WHERE " + numero;
+		String sentencia = "SELECT numero, observaciones FROM Computadoras WHERE numero = " + numero;
+		//String sentencia = "SELECT isbn, observacion FROM Libros WHERE isbn = " + isbn;
 		System.out.println(sentencia);
 		try {
-			
 			Connection conexion = getConnection();
 			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
 			ResultSet rs = declaracionSQL.executeQuery();
 			
-			while(rs.next()) {
+			if (!rs.next()) {
+				System.out.println("no existe");
+			} else {
+				
 				neoNumero = rs.getInt(1);
 				neoObservacion = rs.getString(2);
+				System.out.println(neoNumero);
+				
+				sentencia = "INSERT INTO PrestamoComputadora (nro, observaciones, nombre, grupo, entrega, devolucion ) VALUES("+ neoNumero +",'"+ neoObservacion +"','"+ estudiante +"','"+ grupo +"','"+ entrega +"','"+ devolucion +"')";
+				
+				System.out.println(sentencia);
+				
+				PreparedStatement declaracionSQL2 = conexion.prepareStatement(sentencia);
+				declaracionSQL2.executeUpdate();
+				
+				res = true;
+				
 			}
-			
-			sentencia = "INSERT INTO PrestamoComputadora (nro, observaciones, nombre, grupo, entrega, devolucion ) VALUES("+ neoNumero +",'"+ neoObservacion +"','"+ estudiante +"','"+ grupo +"','"+ entrega +"','"+ devolucion +"')";
-			
-			System.out.println(sentencia);
-			
-			PreparedStatement declaracionSQL2 = conexion.prepareStatement(sentencia);
-			declaracionSQL2.executeUpdate();
-			
-			res = true;
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
@@ -426,7 +436,7 @@ public class DBPersistencia {
 		
 		var res = false;
 		
-		String sentencia = "SELECT id, cantidad, precio FROM Impresiones";
+		String sentencia = "SELECT id, cantidad, precio, fecha FROM Impresiones";
 		System.out.println(sentencia);
 		try {
 			
@@ -438,8 +448,9 @@ public class DBPersistencia {
 				var neoID = rs.getString(1);
 				var neoCantidad = rs.getInt(2);
 				var neoPrecio = rs.getInt(3);
+				var neoFecha = rs.getString(4);
 				
-				Object[] fila = {neoID, neoCantidad, neoPrecio};
+				Object[] fila = {neoID, neoCantidad, neoPrecio, neoFecha};
 				modelo.addRow(fila);
 			}
 			
@@ -541,6 +552,40 @@ public class DBPersistencia {
 		
 		return res;
 	}
-
 	
+	
+	
+	public Boolean ComprobarExistenciaISBN(String isbn) {
+		
+		Boolean res = false;
+		
+		String sentencia = "SELECT isbn FROM Libros WHERE isbn = '" + isbn + "'";
+		
+		System.out.println(sentencia);
+		
+		try {
+			
+			Connection conexion = getConnection();
+			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
+			ResultSet rs = declaracionSQL.executeQuery();
+			
+			while(rs.next()) {
+				isbn = rs.getString(1);
+			}
+			
+			res = true;
+			System.out.println(res);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+			res = false;
+			
+		} finally {
+			System.out.println("Se hizo o intento listar los Libros");
+			
+		}
+		
+		return res;
+	}
+		
 }

@@ -1,9 +1,10 @@
 package Biblioteca;
 
 import java.util.ArrayList;
+
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import java.beans.BeanDescriptor;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -44,9 +45,10 @@ public class LGestor {
 	
 	/*
 	 * FUNCION: SubirLibro
-	 * INPUT:
-	 * OUTPUT:
+	 * INPUT: String isbn, String titulo, String autor, String materia, int cantidad, String pais, String observacion
+	 * OUTPUT: Boolean res
 	 * 
+	 * Metodo encargado de verificar que los datos que se vayan a subir no sean nulos y llama a la base de datos
 	 * 
 	 */
 	public Boolean SubirLibro(String isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion) {
@@ -56,6 +58,9 @@ public class LGestor {
 		if (isbn.equals(null) || titulo.equals(null) || autor.equals(null) || genero.equals(null) || materia.equals(null) || cantidad <= 0 || pais.equals(null)) {
 			res = false;
 		} else {
+			if (observacion.equals("")) {
+				observacion = "¡No hay observaciones!";
+			}
 			res = DB.subirLibro(isbn, titulo, autor, genero, materia, cantidad, pais, observacion);
 		}
 		
@@ -69,6 +74,9 @@ public class LGestor {
 		if (numero <= 0) {
 			res = false;
 		} else {
+			if (observacion.equals("")) {
+				observacion = "¡No hay observaciones!";
+			}
 			res = DB.subirComputadora(numero, observacion);
 		}
 		
@@ -78,11 +86,14 @@ public class LGestor {
 	public Boolean SubirImpresion(int monto, int cantidad) {
 		
 		Boolean res;
+		LocalDate fechaActual = LocalDate.now();
+		DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String entrega = fechaActual.format(formatoFecha);
 		
 		if (monto <=0 || cantidad <=0) {
 			res = false;
 		} else {
-			res = DB.subirImpresion(monto, cantidad);
+			res = DB.subirImpresion(monto, cantidad, entrega);
 		}
 		
 		return res;
@@ -99,7 +110,11 @@ public class LGestor {
 		if (isbn.equals(null) || estudiante.equals(null) || grupo.equals(null) || devolucion.equals(null)) {
 			res = false;
 		} else {
-			res = DB.subirPrestamoLibro(isbn, estudiante, grupo, entrega, devolucion);
+			if (DB.ComprobarExistenciaISBN(isbn) == true) {
+				res = DB.subirPrestamoLibro(isbn, estudiante, grupo, entrega, devolucion);
+			} else {
+				res = false;
+			}
 		}
 		
 		return res;
@@ -196,6 +211,18 @@ public class LGestor {
 		Boolean res = DB.ListarPrestamoComputadora(modelo, array);
 		
 		return res;
+	}
+	
+	public void SumaMontoImpresion(JTable tabla, int filas) {
+		
+		//int res;
+		
+		for (int i = 0; i < filas; i++) {
+		    Object valor = tabla.getValueAt(i, 1);
+		    System.out.println("Fila " + i + ": " + valor);
+		}
+		
+		//return res;
 	}
 
 }
