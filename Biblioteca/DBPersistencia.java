@@ -8,24 +8,26 @@ import javax.swing.table.*;
 
 public class DBPersistencia {
 
-	//private final String DB_URL = "jdbc:mysql://170.249.219.114/program1_equipo4?useSSL=false";
-	//private final String DB_USER = "program1_estudiantes";
-	//private final String DB_PASS = "estudiantesarrayanes";
-
-	private final String DB_URL = "jdbc:mysql://localhost/BibliotecaPanDeAzucar?useSSL=false";
-	private final String DB_USER = "root";
-	private final String DB_PASS = "";
-
+	private final String DB_URL = "jdbc:mysql://170.249.219.114/program1_equipo4?useSSL=false";
+	private final String DB_USER = "program1_estudiantes";
+	private final String DB_PASS = "estudiantesarrayanes";
+	
+	//private final String DB_URL = "jdbc:mysql://localhost/BibliotecaPanDeAzucar?useSSL=false";
+	//private final String DB_USER = "root";
+	//private final String DB_PASS = "";
+	
 	private Connection getConnection() throws SQLException{
 		return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 	}
+	
 	
 	
 	public Boolean subirLibro(String isbn, String titulo, String autor, String genero, String materia, int cantidad, String pais, String observacion, String hora, String fecha) {
 		
 		var res = false;
 		
-		String sentencia = "INSERT INTO Libros VALUES(" + isbn + ",'" + titulo + "','" + autor + "','" + genero + "','" + materia + "'," + cantidad + ",'" + pais + "','" + observacion + "','" + hora + "','" + fecha + "')";
+		String sentencia = "INSERT INTO Libros VALUES('" + isbn + "','" + titulo + "','" + autor + "','" + genero + "','" + materia + "'," + cantidad + ",'" + pais + "','" + observacion + "','" + hora + "','" + fecha + "')";
+
 		System.out.println(sentencia);
 		try {
 			
@@ -115,7 +117,6 @@ public class DBPersistencia {
 		String neoIsbn = "";
 		String neoObservacion = "";
 		var res = false;
-		System.out.println(isbn);
 		
 		String sentencia = "SELECT isbn, observacion FROM Libros WHERE isbn = " + isbn;
 		System.out.println(sentencia);
@@ -138,7 +139,7 @@ public class DBPersistencia {
 				
 				PreparedStatement declaracionSQL2 = conexion.prepareStatement(sentencia);
 				declaracionSQL2.executeUpdate();
-
+				
 				res = true;
 				
 			}
@@ -165,7 +166,6 @@ public class DBPersistencia {
 		System.out.println(numero);
 		
 		String sentencia = "SELECT numero, observaciones FROM Computadoras WHERE numero = " + numero;
-		//String sentencia = "SELECT isbn, observacion FROM Libros WHERE isbn = " + isbn;
 		System.out.println(sentencia);
 		try {
 			Connection conexion = getConnection();
@@ -223,7 +223,7 @@ public class DBPersistencia {
 			res = false;
 			
 		} finally {
-			System.out.println("Se hizo o intento listar los Libros");
+			System.out.println("Se hizo o intento eliminar los Libros");
 			
 		}
 		
@@ -252,7 +252,7 @@ public class DBPersistencia {
 			res = false;
 			
 		} finally {
-			System.out.println("Se hizo o intento listar los Libros");
+			System.out.println("Se hizo o intento eliminar los Libros");
 			
 		}
 		
@@ -281,7 +281,7 @@ public class DBPersistencia {
 			res = false;
 			
 		} finally {
-			System.out.println("Se hizo o intento listar las impresiones");
+			System.out.println("Se hizo o intento eliminar las impresiones");
 			
 		}
 		
@@ -311,7 +311,7 @@ public class DBPersistencia {
 			res = false;
 			
 		} finally {
-			System.out.println("Se hizo o intento listar los prestamos de libros");
+			System.out.println("Se hizo o intento eliminar los prestamos de libros");
 			
 		}
 		
@@ -341,7 +341,7 @@ public class DBPersistencia {
 			res = false;
 			
 		} finally {
-			System.out.println("Se hizo o intento listar los prestamos de libros");
+			System.out.println("Se hizo o intento eliminar los prestamos de libros");
 			
 		}
 		
@@ -565,39 +565,5 @@ public class DBPersistencia {
 		return res;
 	}
 	
-	
-	
-	public Boolean ComprobarExistenciaISBN(String isbn) {
-		
-		Boolean res = false;
-		
-		String sentencia = "SELECT isbn FROM Libros WHERE isbn = '" + isbn + "'";
-		
-		System.out.println(sentencia);
-		
-		try {
-			
-			Connection conexion = getConnection();
-			PreparedStatement declaracionSQL = conexion.prepareStatement(sentencia);
-			ResultSet rs = declaracionSQL.executeQuery();
-			
-			while(rs.next()) {
-				isbn = rs.getString(1);
-			}
-			
-			res = true;
-			System.out.println(res);
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-			res = false;
-			
-		} finally {
-			System.out.println("Se hizo o intento listar los Libros");
-			
-		}
-		
-		return res;
-	}
 		
 }

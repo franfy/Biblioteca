@@ -2,13 +2,16 @@ package Biblioteca;
 
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.sun.tools.javac.Main;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -76,7 +79,6 @@ public class LGestor {
 			}
 			
 		} catch (Exception e) {
-			//JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
 			res = false;
 			System.out.println("Algo salio mal");
 		}
@@ -104,7 +106,6 @@ public class LGestor {
 			}
 			
 		} catch (Exception e) {
-			//JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
 			res = false;
 			System.out.println("Algo salio mal");
 		}
@@ -145,7 +146,7 @@ public class LGestor {
 		String entrega = TomarFecha();
 		String hora = TomarHora();
 		
-		if (isbn.equals(null) || estudiante.equals(null) || grupo.equals(null) || devolucion.equals(null)) {
+		if (isbn.equals("") || estudiante.equals("") || grupo.equals("") || devolucion.equals("")) {
 			res = false;
 		} else {
 			if (apellido.equals("Opcional")) {
@@ -207,7 +208,6 @@ public class LGestor {
 	
 	public Boolean BajaLibro(String isbn) {
 		
-		
 		Boolean res = DB.BajaLibro(isbn);
 		
 		return res;
@@ -246,11 +246,12 @@ public class LGestor {
 		
 	}
 	
-	public Boolean ListarLibro(DefaultTableModel modelo,ArrayList array) {
+	public Boolean ListarLibro(DefaultTableModel modelo, ArrayList array) {
 		
 		Boolean res = DB.ListarLibro(modelo, array);
 		
 		return res;
+		
 	}
 	
 	public Boolean ListarComputadora(DefaultTableModel modelo, ArrayList array) {
@@ -258,6 +259,7 @@ public class LGestor {
 		Boolean res = DB.ListarComputadora(modelo, array);
 		
 		return res;
+		
 	}
 	
     public Boolean ListarImpresion(DefaultTableModel modelo, ArrayList array) {
@@ -265,34 +267,23 @@ public class LGestor {
 		Boolean res = DB.ListarImpresion(modelo, array);
 		
 		return res;
+		
 	}
-    
-    public Boolean ListarFiltrarImpresion(DefaultTableModel modelo, ArrayList array, String fecha) {
-    	
-    	Boolean res = false;
-    	
-    	if (fecha.charAt(2) == '/' && fecha.charAt(5) == '/') {
-    		String parte = fecha.substring(3,5);
-    		System.out.println(parte);
-    		
-    	}
-    	
-    	return res;
-    	
-    }
 	
-	public Boolean ListarPrestamoLibro(DefaultTableModel modelo,ArrayList array) {
+	public Boolean ListarPrestamoLibro(DefaultTableModel modelo, ArrayList array) {
 		
 		Boolean res = DB.ListarPrestamoLibro(modelo, array);
 		
 		return res;
+		
 	}
 	
-	public Boolean ListarPrestamoComputadora(DefaultTableModel modelo,ArrayList array) {
+	public Boolean ListarPrestamoComputadora(DefaultTableModel modelo, ArrayList array) {
 		
 		Boolean res = DB.ListarPrestamoComputadora(modelo, array);
 		
 		return res;
+		
 	}
 	
 	public int SumaMontoImpresion(JTable tabla, int filas) {
@@ -314,7 +305,7 @@ public class LGestor {
 	}
 	
 	public String TomarFecha() {
-				
+		
 		LocalDate fechaActual = LocalDate.now();
 		DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return fechaActual.format(formatoFecha);
@@ -328,34 +319,31 @@ public class LGestor {
 		int minutos = tiempo.getMinute();
 		int segundos = tiempo.getSecond();
 		
-		return String.format("%02d:%02d:%02d", segundos, minutos, horas);
+		return String.format("%02d:%02d:%02d", horas, minutos, segundos);
 		
 	}
 	
 	
     public static void ManualPDF() {
-    	try {
-            // Obtener la ruta absoluta del proyecto
-            String rutaProyecto = System.getProperty("user.dir");
+    	// Ruta del archivo PDF
+    	String rutaPDF = System.getProperty("user.home") + "/.Biblioteca/Recursos/Manual de Usuario - Sistema de Gestión de Biblioteca.pdf";
 
-            // Crear objeto File con la ruta completa al PDF
-            File archivo = new File(rutaProyecto, "src/Otros/Manual de Usuario - Sistema de Gestión de Biblioteca.pdf");
 
-            // Verificar si el archivo existe
-            if (!archivo.exists()) {
-                System.err.println("No se encontró el archivo: " + archivo.getAbsolutePath());
-                return;
-            }
+        // Comando para abrir el PDF en Linux
+        String[] comando = {"xdg-open", rutaPDF};
 
-            // Usar xdg-open para abrir el archivo con la aplicación predeterminada
-            ProcessBuilder pb = new ProcessBuilder("xdg-open", archivo.getAbsolutePath());
-            pb.start();
-
-            System.out.println("Abriendo en el navegador o visor predeterminado: " + archivo.getAbsolutePath());
-
+        try {
+            // Ejecutar el comando
+            Process proceso = new ProcessBuilder(comando).start();
+            proceso.waitFor(); // opcional: espera a que se complete el proceso
+            System.out.println("PDF abierto correctamente.");
         } catch (IOException e) {
             System.err.println("Error al intentar abrir el PDF: " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("El proceso fue interrumpido.");
         }
+
     }
 	
 }

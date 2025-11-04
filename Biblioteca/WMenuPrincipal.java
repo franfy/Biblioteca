@@ -13,6 +13,13 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 public class WMenuPrincipal extends JFrame{
 
+	/*
+	 * Esta parte del código, desde la línea 24 hasta la 62 son parte de las funcionalidades que SIEMPRE están disponibles
+	 * a todo minuto del programa, ya sea para la personalización o acceder a algún dato o método.
+	 * 
+	 * -Franco
+	 */
+	
 	//Imports para el funcionamiento de la GUI
 	protected static JPanel PanelPadre = new JPanel(new BorderLayout());
 	protected static JPanel PanelLocal = new JPanel(new GridBagLayout());
@@ -43,12 +50,14 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	//Objetos para la personalizacion del programa
-	protected static Tema[] Temas = { /* Fondo, Botones, Letras*/
+	protected static Tema[] Temas = { /* Fondo, Botones, Letras, Seleccionado*/
 		    new Tema(Color.WHITE, new Color(180,180,180), Color.BLACK, new Color(130,130,130)),// Claro
 		    new Tema(new Color(32,32,32), new Color(64,64,64), new Color(224,244,244), new Color(120,120,120)),// Oscuro
-		    new Tema(new Color(15,138,76),new Color(10, 100, 10), Color.BLACK, new Color(30,130,0))// Verde Aqua
+		    new Tema(new Color(51,153,255), new Color(45,125,200), new Color(32,32,32), new Color(20,90,155)),// Celeste
+		    new Tema(new Color(15,138,76),new Color(10, 100, 10), Color.BLACK, new Color(30,130,0)),// Verde
+		    new Tema(new Color(3,187,133),new Color(5,210,150), Color.BLACK, new Color(30,150,120)),// Verde Aqua
 		};
-	protected static String[] coloresNombres = {"Claro", "Oscuro", "Verde Aqua"};
+	protected static String[] coloresNombres = {"Claro", "Oscuro", "Celeste", "Verde", "Verde Aqua"};
 	protected static int colorIndex;
 	protected static int colorIndexBotones;
 	protected static JComboBox temasEleccion = new JComboBox(coloresNombres);
@@ -56,6 +65,12 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * Desde la línea 72 hasta la línea 91 solo sirven para poder hacer funcionar el programa llamándolo desde la clase
+	 * LGestor y establecer los valores de la ventana.
+	 * 
+	 * -Franco
+	 */
 	public WMenuPrincipal() {
 
 		
@@ -78,12 +93,26 @@ public class WMenuPrincipal extends JFrame{
 	}
 	
 	
-	
+	/*
+	 * FUNCION: FTab
+	 * INPUT: 
+	 * OUTPUT:
+	 * 
+	 * Esta función es encargada de hacer que la interfaz sea funcional, integrando un JTabbedPane llamado "herramientas"
+	 * y sus elementos, que representan todas las funciones del programa, desde el "Registrar Libro" hasta el manual de 
+	 * usuario.
+	 * 
+	 * Cada botón en el JTabbedPane tiene un evento (Action Listener) que llama a la funcion a la que el nombre del botón
+	 * hace referencia: btnRegistrarLibro ---> llama ---> FRegistrarLibro()
+	 * 
+	 * -Franco
+	 * 
+	 */
 	public static void FTab() {
 		
 		
 		//Imports
-		//Presentes antes del constructor
+		//Presentes antes del constructor. Línea 22 hasta 60
 		
 		
 		//Setters
@@ -135,7 +164,6 @@ public class WMenuPrincipal extends JFrame{
 		menuPrestamo.add(btnRegistrarPrestamoComputadora);
 		
 		menuConfiguracion.add(btnConfiguracionTemas);
-		//menuConfiguracion.add(btnConfiguracionBarraLateral);
 		
 		menuOtros.add(btnOtrosManual);
 		
@@ -160,16 +188,17 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnRegistrarLibro, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarLibro, Temas[colorIndexBotones].getSeleccionado());
 				FRegistrarLibro();
 			}
 		});
+		
 		
 		btnRegistrarComputadora.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnRegistrarComputadora, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarComputadora, Temas[colorIndexBotones].getSeleccionado());
 				FRegistrarComputadora();
 			}
 		});
@@ -178,7 +207,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnRegistrarImpresion, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarImpresion, Temas[colorIndexBotones].getSeleccionado());
 				FRegistrarImpresion();
 			}
 		});
@@ -187,7 +216,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnListarLibro, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarLibro, Temas[colorIndexBotones].getSeleccionado());
 				FListarLibro();
 			}
 		});
@@ -196,7 +225,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnListarComputadora, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarComputadora, Temas[colorIndexBotones].getSeleccionado());
 				FListarComputadora();
 			}
 		});
@@ -205,7 +234,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnListarImpresion, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarImpresion, Temas[colorIndexBotones].getSeleccionado());
 				FListarImpresion();
 			}
 		});
@@ -214,7 +243,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnListarPrestamoLibro, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoLibro, Temas[colorIndexBotones].getSeleccionado());
 				FListarPrestamoLibro();
 			}
 		});
@@ -223,7 +252,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnListarPrestamoComputadora, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoComputadora, Temas[colorIndexBotones].getSeleccionado());
 				FListarPrestamoComputadora();
 			}
 		});
@@ -232,7 +261,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnRegistrarPrestamoLibro, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoLibro, Temas[colorIndexBotones].getSeleccionado());
 				FRegistrarPrestamoLibro();
 			}
 		});
@@ -241,7 +270,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnRegistrarPrestamoComputadora, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoComputadora, Temas[colorIndexBotones].getSeleccionado());
 				FRegistrarPrestamoComputadora();
 			}
 		});
@@ -250,7 +279,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnConfiguracionTemas, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnConfiguracionTemas, Temas[colorIndexBotones].getSeleccionado());
 				FConfiguracionTemas();
 				
 			}
@@ -260,7 +289,7 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FCambiarColorSeleccionado(btnOtrosManual, Temas[colorIndex].getSeleccionado());
+				FCambiarColorSeleccionado(btnOtrosManual, Temas[colorIndexBotones].getSeleccionado());
 				FManualUsuario();
 			}
 		});
@@ -271,6 +300,34 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	
+	/*
+	 * FUNCION: FRegistrarLibro
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Esta función se encarga de recopilar los datos para poder ingresar un libro y luego pasarlos a la capa lógica.
+	 * 
+	 * Desde esta función en adelante, siempre habrá un orden en el que la interfaz se manejará. Cada espacio para ingresar
+	 * datos está conformado por un JPanel, un JLabel y un JTextField.
+	 * 
+	 * Al panel se le aplica un BoxLayout en horizontal para luego añadir el JLabel y el JTextField correspondiente.
+	 * 
+	 * También hay un panel extra (panelVertical1) que se encarga de agrupar todos los elementos en vertical con un 
+	 * BoxLayout en vertical.
+	 * 
+	 * Como últimos pasos, hay un JButton y un JLabel encargados de enviar la información a la capa lógica mediante un 
+	 * evento (ActionListener) y mostrar el resultado de si el proceso fue exitoso o no (respectivamente).
+	 * 
+	 * Como extra podemos agregar que el código lleva una estructura con casi total totalidad que consiste en: Variables y 
+	 * arrays, Imports, Setters y Getters, Adds, Eventos y el momento en donde todos los elementos previamente establecidos
+	 * son visualizados en la pantalla mediante el uso del PanelPadre y PanelLocal (El PanelTabla es usado para las tablas
+	 * con las que más tarde se hace el listado de datos).
+	 * 
+	 * Esta misma estructura es utilizada en todas las demás funciones (con algunas excepciones concretas).
+	 * 
+	 * -Franco
+	 */
 	public static void FRegistrarLibro() {
 		
 		
@@ -427,6 +484,15 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * FUNCION: FRegistrarComputadora
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Esta función cumple la labor de recopilar los datos para las computadoras y mas tarde mandarla a la capa lógica
+	 * 
+	 * -Franco
+	 */
 	public static void FRegistrarComputadora() {
 		
 		
@@ -514,6 +580,13 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * FUNCION:
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Similar a las anteriores funciones, esta se encarga de recopilar los datos necesarios para las impresiones.
+	 */
 	public static void FRegistrarImpresion() {
 		
 		
@@ -556,6 +629,7 @@ public class WMenuPrincipal extends JFrame{
 		panelVertical1.add(panelHorizontalCantidadImpresiones);
 		panelVertical1.add(boton);
 		panelVertical1.add(LabelResultado);
+		panelVertical1.setOpaque(false);
 		
 		//Eventos
 		boton.addActionListener(new ActionListener() {
@@ -583,6 +657,14 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * FUNCION: FRegistrarPrestamoLibro
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Esta función se encarga de recopilar los datos extra necesarios para realizar los préstamos de los libros.
+	 * 
+	 */
 	public static void FRegistrarPrestamoLibro() {
 		
 		
@@ -757,6 +839,14 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * FUNCION: FRegistrarPrestamoComputadora
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Esta función se encarga de recopilar los datos extra necesarios para realizar los préstamos de las computadoras.
+	 * 
+	 */
 	public static void FRegistrarPrestamoComputadora() {
 	
 		
@@ -931,6 +1021,16 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	
+	/*
+	 * FUNCION: FListarLibro
+	 * INPUT:
+	 * OUTPUT:
+	 * 
+	 * Esta funcion sirve para poder listar los Libros registrados en la base de datos.
+	 * 
+	 * Se utiliza un array String[] columnas para definir las columnas y que datos van a mostrar en cada una 
+	 * 
+	 */
 	public static void FListarLibro() {
 		
 		
@@ -950,11 +1050,16 @@ public class WMenuPrincipal extends JFrame{
 		
 		//Setters
 		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
-		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
-		tabla.getTableHeader().setReorderingAllowed(false);
 		panelHorizontalBaja.setOpaque(false);
 		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
 		
+		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
+		
+		tabla.getTableHeader().setReorderingAllowed(false);
+		
+		scroll.getViewport().setBackground(Temas[colorIndex].getFondo());
+		tabla.setBackground(Temas[colorIndex].getFondo());
+		tabla.setForeground(Temas[colorIndex].getLetras());
 		
 		//Adds
 		panelHorizontalBaja.add(botonBaja);
@@ -1021,13 +1126,16 @@ public class WMenuPrincipal extends JFrame{
 		
 		//setters
 		panelHorizontalBaja.setLayout(new BoxLayout(panelHorizontalBaja, BoxLayout.X_AXIS));
-		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
 		panelHorizontalBaja.setOpaque(false);
+		FcambiarColorFondo(panelHorizontalBaja, Temas[colorIndex].getFondo());
 		
 		FhacerRedondeado(botonBaja, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
+		scroll.getViewport().setBackground(Temas[colorIndex].getFondo());
+		tabla.setBackground(Temas[colorIndex].getFondo());
+		tabla.setForeground(Temas[colorIndex].getLetras());
 		
 		//adds
 		panelHorizontalBaja.add(botonBaja);
@@ -1104,6 +1212,10 @@ public class WMenuPrincipal extends JFrame{
 		FhacerRedondeado(botonMonto, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 		
 		tabla.getTableHeader().setReorderingAllowed(false);
+		
+		scroll.getViewport().setBackground(Temas[colorIndex].getFondo());
+		tabla.setBackground(Temas[colorIndex].getFondo());
+		tabla.setForeground(Temas[colorIndex].getLetras());
 		
 		LabelMonto.setForeground(Temas[colorIndex].getLetras());
 		
@@ -1198,6 +1310,9 @@ public class WMenuPrincipal extends JFrame{
 		
 		tabla.getTableHeader().setReorderingAllowed(false);
 		
+		scroll.getViewport().setBackground(Temas[colorIndex].getFondo());
+		tabla.setBackground(Temas[colorIndex].getFondo());
+		tabla.setForeground(Temas[colorIndex].getLetras());
 		
 		//adds
 		panelHorizontalBaja.add(botonBaja);
@@ -1350,7 +1465,7 @@ public class WMenuPrincipal extends JFrame{
 		//setters
 		FcambiarColorTexto(label1, Temas[colorIndex].getLetras());
 		FcambiarColorTexto(label2, Temas[colorIndex].getLetras());
-		FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndex].getLetras());
+		FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndexBotones].getLetras());
 		
 		FhacerRedondeado(Aplicar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 		
@@ -1407,7 +1522,7 @@ public class WMenuPrincipal extends JFrame{
 				//Cambia botones y label del menu de configuracion
 				FcambiarColorTexto(label1, Temas[colorIndex].getLetras());
 				FcambiarColorTexto(label2, Temas[colorIndex].getLetras());
-				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndex].getLetras());
+				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(Aplicar, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 				FhacerRedondeado(Revertir, Temas[colorIndex].getBotones(), Temas[colorIndex].getLetras());
 				
@@ -1419,6 +1534,7 @@ public class WMenuPrincipal extends JFrame{
 				FhacerRedondeado(btnRegistrarPrestamoComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(btnListarLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(btnListarComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
+				FhacerRedondeado(btnListarImpresion, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(btnListarPrestamoLibro, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(btnListarPrestamoComputadora, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
 				FhacerRedondeado(btnConfiguracionTemas, Temas[colorIndexBotones].getBotones(), Temas[colorIndexBotones].getLetras());
@@ -1434,6 +1550,19 @@ public class WMenuPrincipal extends JFrame{
 					
 				}
 				
+				FCambiarColorSeleccionado(btnRegistrarLibro, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarComputadora, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarImpresion, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoLibro, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoComputadora, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarLibro, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarComputadora, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarImpresion, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoLibro, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoComputadora, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnConfiguracionTemas, Temas[colorIndexBotones].getSeleccionado());
+				FCambiarColorSeleccionado(btnOtrosManual, Temas[colorIndexBotones].getSeleccionado());
+				
 			}
 		});
 		
@@ -1441,6 +1570,9 @@ public class WMenuPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				colorIndex = 0;
+				colorIndexBotones = 0;
+				
 				
 				//Tema para PanelPadre y Panel Local
 				PanelPadre.setBackground(Temas[0].getFondo());
@@ -1451,6 +1583,7 @@ public class WMenuPrincipal extends JFrame{
 				FcambiarColorTexto(label2, Temas[0].getLetras());
 				FcambiarColorTexto(AplicarFondoBarraHerramienta, Temas[0].getLetras());
 				FhacerRedondeado(Aplicar, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(Revertir, Temas[0].getBotones(), Temas[0].getLetras());
 
 				//Aplica el cambio de los temas a todo lo demas
 				FhacerRedondeado(btnRegistrarLibro, Temas[0].getBotones(), Temas[0].getLetras());
@@ -1460,6 +1593,7 @@ public class WMenuPrincipal extends JFrame{
 				FhacerRedondeado(btnRegistrarPrestamoComputadora, Temas[0].getBotones(), Temas[0].getLetras());
 				FhacerRedondeado(btnListarLibro, Temas[0].getBotones(), Temas[0].getLetras());
 				FhacerRedondeado(btnListarComputadora, Temas[0].getBotones(), Temas[0].getLetras());
+				FhacerRedondeado(btnListarImpresion, Temas[0].getBotones(), Temas[0].getLetras());
 				FhacerRedondeado(btnListarPrestamoLibro, Temas[0].getBotones(), Temas[0].getLetras());
 				FhacerRedondeado(btnListarPrestamoComputadora, Temas[0].getBotones(), Temas[0].getLetras());
 				FhacerRedondeado(btnConfiguracionTemas, Temas[0].getBotones(), Temas[0].getLetras());
@@ -1471,6 +1605,29 @@ public class WMenuPrincipal extends JFrame{
 				FcambiarColorFondo(menuPrestamo, Temas[0].getFondo());
 				FcambiarColorFondo(menuConfiguracion, Temas[0].getFondo());
 				FcambiarColorFondo(menuOtros, Temas[0].getFondo());
+				
+				if (AplicarFondoBarraHerramienta.isSelected()) {
+					FcambiarColorFondo(menuRegistrar, Temas[0].getFondo());
+					FcambiarColorFondo(menuListar, Temas[0].getFondo());
+					FcambiarColorFondo(menuPrestamo, Temas[0].getFondo());
+					FcambiarColorFondo(menuConfiguracion, Temas[0].getFondo());
+					FcambiarColorFondo(menuOtros, Temas[0].getFondo());
+					
+				}
+				
+				//
+				FCambiarColorSeleccionado(btnRegistrarLibro, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarComputadora, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarImpresion, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoLibro, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnRegistrarPrestamoComputadora, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarLibro, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarComputadora, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarImpresion, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoLibro, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnListarPrestamoComputadora, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnConfiguracionTemas, Temas[0].getSeleccionado());
+				FCambiarColorSeleccionado(btnOtrosManual, Temas[0].getSeleccionado());
 				
 			}
 		});
@@ -1720,6 +1877,12 @@ public class WMenuPrincipal extends JFrame{
 	
 	
 	/*
+	 * FUNCION: FajustarContraste
+	 * INPUT: Color c
+	 * OUTPUT:
+	 * 
+	 * elige blanco o negro según la luminosidad del color, con el objetivo de mantener buen contraste y que el texto o 
+	 * elemento sea fácil de leer sobre ese fondo.
 	 * 
 	 */
 	private static Color FajustarContraste(Color c) {
